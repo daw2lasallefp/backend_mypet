@@ -15,7 +15,14 @@ class CreateVaccinationsTable extends Migration
     {
         Schema::create('vaccinations', function (Blueprint $table) {
             $table->id();
+            $table->date('date');
+            $table->boolean('done');
+            $table->unsignedBigInteger('pet_id');
+            $table->unsignedBigInteger('vaccine_id');
             $table->timestamps();
+
+            $table->foreign('vaccine_id')->references('id')->on('vaccines');
+            $table->foreign('pet_id')->references('id')->on('pets');
         });
     }
 
