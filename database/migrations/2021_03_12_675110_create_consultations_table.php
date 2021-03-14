@@ -15,10 +15,10 @@ class CreateConsultationsTable extends Migration
     {
         Schema::create('consultations', function (Blueprint $table) {
             $table->id();
-            $table->datetime('date_time');
+            $table->datetime('date_time')->nullable(false);
             $table->string('comments');
-            $table->unsignedBigInteger('pet_id');
-            $table->unsignedBigInteger('employee_id');
+            $table->unsignedBigInteger('pet_id')->nullable(false);
+            $table->unsignedBigInteger('employee_id')->nullable(false);
             $table->timestamps();
 
             $table->foreign('pet_id')->references('id')->on('pets');
