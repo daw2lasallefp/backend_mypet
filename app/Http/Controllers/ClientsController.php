@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Users;
+use App\Models\Clients;
 use Illuminate\Http\Request;
 
-class UsersController extends Controller
+class ClientsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class UsersController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Users  $users
+     * @param  \App\Models\Client  $clients
      * @return \Illuminate\Http\Response
      */
-    public function show(Users $users)
+    public function show(Clients $clients)
     {
         //
     }
@@ -55,7 +55,7 @@ class UsersController extends Controller
      * @param  \App\Models\Users  $users
      * @return \Illuminate\Http\Response
      */
-    public function edit(Users $users)
+    public function edit(Clients $clients)
     {
         //
     }
@@ -67,7 +67,7 @@ class UsersController extends Controller
      * @param  \App\Models\Users  $users
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Users $users)
+    public function update(Request $request, Clients $clients)
     {
         //
     }
@@ -75,10 +75,10 @@ class UsersController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Users  $users
+     * @param  \App\Models\Clients  $clients
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Users $consultations)
+    public function destroy(Clients $consultations)
     {
         //
     }
