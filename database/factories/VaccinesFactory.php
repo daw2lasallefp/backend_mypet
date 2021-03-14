@@ -24,8 +24,7 @@ class VaccinesFactory extends Factory
         return [
             'id' => $this->faker->unique()->numberBetween(1,200),
             'name' => $this->faker->randomElement(['parvovirus','rabia','inmunodeficiencia','leishmaniosis']),
-           
-            //
+            'available' => $this->faker->boolean(80)
         ];
     }
 }
