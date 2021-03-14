@@ -1,12 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Clients;
 use Illuminate\Http\Request;
 
 class ClientsController extends Controller
 {
+  
     /**
      * Display a listing of the resource.
      *
@@ -41,7 +41,7 @@ class ClientsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Client  $clients
+     * @param  \App\Models\Clients  $clients
      * @return \Illuminate\Http\Response
      */
     public function show(Clients $clients)
@@ -52,7 +52,7 @@ class ClientsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Users  $users
+     * @param  \App\Models\Clients  $clients
      * @return \Illuminate\Http\Response
      */
     public function edit(Clients $clients)
@@ -64,7 +64,7 @@ class ClientsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Users  $users
+     * @param  \App\Models\Clients  $clients
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Clients $clients)
@@ -78,7 +78,7 @@ class ClientsController extends Controller
      * @param  \App\Models\Clients  $clients
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Clients $consultations)
+    public function destroy(Clients $clients)
     {
         //
     }
