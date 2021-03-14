@@ -12,5 +12,10 @@ class Vaccines extends Model
     protected $fillable = [
         'id',
         'name',
+        'available'
+    ];
+
+    protected $casts = [
+        'available' => 'boolean',
     ];
 }

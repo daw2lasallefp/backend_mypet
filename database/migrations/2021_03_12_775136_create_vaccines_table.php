@@ -15,7 +15,8 @@ class CreateVaccinesTable extends Migration
     {
         Schema::create('vaccines', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique()->nullable(false);
+            $table->boolean('available')->nullable($value = false)->default(true);
             $table->timestamps();
         });
     }

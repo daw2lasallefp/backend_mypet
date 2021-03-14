@@ -10,11 +10,16 @@ class VaccinesController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->has('available')) {
+            return Vaccines::all()->where('available', filter_var($request->available, FILTER_VALIDATE_BOOLEAN));
+        } else {
+            return Vaccines::all();
+        }
     }
 
     /**
@@ -24,7 +29,7 @@ class VaccinesController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -35,7 +40,7 @@ class VaccinesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return Vaccines::create($request->all());
     }
 
     /**
@@ -44,9 +49,9 @@ class VaccinesController extends Controller
      * @param  \App\Models\Vaccines  $vaccines
      * @return \Illuminate\Http\Response
      */
-    public function show(Vaccines $vaccines)
+    public function show($id)
     {
-        //
+        return Vaccines::find($id);
     }
 
     /**
@@ -67,9 +72,13 @@ class VaccinesController extends Controller
      * @param  \App\Models\Vaccines  $vaccines
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Vaccines $vaccines)
+    public function update(Request $request, $id)
     {
-        //
+        $article = Vaccines::findOrFail($id);
+
+        $article->update(['available' => $request->available]);
+
+        return $article;
     }
 
     /**

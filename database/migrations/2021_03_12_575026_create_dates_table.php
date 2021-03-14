@@ -15,9 +15,9 @@ class CreateDatesTable extends Migration
     {
         Schema::create('dates', function (Blueprint $table) {
             $table->id();
-            $table->date('date_time');
-            $table->unsignedBigInteger('pet_id');
-            $table->unsignedBigInteger('employee_id');
+            $table->date('date_time')->nullable(false);
+            $table->unsignedBigInteger('pet_id')->nullable(false);
+            $table->unsignedBigInteger('employee_id')->nullable(false);
             $table->timestamps();
 
             $table->foreign('pet_id')->references('id')->on('pets');
