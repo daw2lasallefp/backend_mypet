@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-
+use App\Http\Controllers\ClientsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,4 +23,5 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 //Rutas Api
-Route::get('/clients/pruebas','ClientsController@pruebas');
+Route::post('/api/register', [App\Http\Controllers\ClientsController::class, 'register']);
+Route::post('/api/login', [App\Http\Controllers\ClientsController::class, 'login']);

@@ -82,4 +82,13 @@ class ClientsController extends Controller
     {
         //
     }
+
+
+    public function register(Request $request){
+        return "Accion de registro de usuarios";
+    }
+
+    public function login(Request $request){
+        return "Acción de loggin de usuarios";
+    }
 }
