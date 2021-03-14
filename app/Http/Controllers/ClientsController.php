@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Clients;
 use Illuminate\Http\Request;
 
@@ -85,7 +86,57 @@ class ClientsController extends Controller
 
 
     public function register(Request $request){
-        return "Accion de registro de usuarios";
+
+        //Recoger datos usuario post
+        $json=$request->input('json', null);
+       
+        //Decodificar json
+        $params = json_decode($json);//objeto
+        $params_array = json_decode($json, true);//array
+        
+        //Validar datos
+        $validate = Validator::make($params_array, [
+            'name' =>'required|alpha',
+            'surname' =>'required|alpha',
+            'email' =>'required|email',
+            'password' =>'required',
+            'phone' =>'required|numeric'
+        ]);
+
+        if($validate->fails()){
+            $data = array(
+
+                'status' => 'error',
+                'code' => 404,
+                'message' => 'El cliente no se ha creado',
+                'errors' => $validate->errors()
+               );
+        }else{
+            $data = array(
+
+                'status' => 'success',
+                'code' => 200,
+                'message' => 'El cliente  se ha creado  correctamente'
+                
+               );
+        }
+
+
+        //cifrar contraseña
+        //Comprobar si el usuario existe, duplicado
+        //Crear cliente
+        //Mensaje error o no
+        
+
+
+
+
+
+       
+
+
+       return response()->json($data, $data['code']);
+
     }
 
     public function login(Request $request){

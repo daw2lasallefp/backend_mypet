@@ -20,6 +20,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 });
+//Clients
+
+
+//Vaccines
 Route::get('/vaccines', [VaccinesController::class, 'index']);
     Route::get('/vaccines/{id}', [VaccinesController::class, 'show']);
     Route::post('/vaccines', [VaccinesController::class, 'store']);
