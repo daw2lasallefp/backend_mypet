@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\ClinicsController;
 use App\Http\Controllers\VaccinesController;
 use Illuminate\Http\Request;
@@ -22,7 +23,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 });
 //Clients
-
+Route::post('/register', [ClientsController::class, 'register']);
+Route::post('/login', [ClientsController::class, 'login']);
 
 //Vaccines
 Route::get('/vaccines', [VaccinesController::class, 'index']);

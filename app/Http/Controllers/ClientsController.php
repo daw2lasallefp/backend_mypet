@@ -160,19 +160,7 @@ class ClientsController extends Controller
 
             );
         }
-
-
-
-
-
-
-
-
-
-
-
-
-        return response()->json($data, $data['code']);
+     return response()->json($data, $data['code']);
     }
 
     public function login(Request $request)
