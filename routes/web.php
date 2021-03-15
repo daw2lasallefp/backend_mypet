@@ -23,5 +23,5 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 //Rutas Api
-Route::post('/api/register', [App\Http\Controllers\ClientsController::class, 'register']);
-Route::post('/api/login', [App\Http\Controllers\ClientsController::class, 'login']);
+Route::post('/api/clientsregister', [App\Http\Controllers\ClientsController::class, 'clientsregister']);
+Route::post('/api/clientslogin', [App\Http\Controllers\ClientsController::class, 'clientslogin']);

@@ -23,8 +23,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 });
 //Clients
-Route::post('/register', [ClientsController::class, 'register']);
-Route::post('/login', [ClientsController::class, 'login']);
+Route::post('/clientsregister', [ClientsController::class, 'clientsregister']);
+Route::post('/clientslogin', [ClientsController::class, 'clientslogin']);
 
 //Vaccines
 Route::get('/vaccines', [VaccinesController::class, 'index']);
