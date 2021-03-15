@@ -14,7 +14,7 @@ class ClinicsController extends Controller
      */
     public function index()
     {
-        return clinics::all()->toJson();
+        return response()->json(clinics::all());
     }
 
     /**
@@ -46,7 +46,7 @@ class ClinicsController extends Controller
      */
     public function show($id)
     {
-        return Clinics::find($id)->toJson();
+        return response()->json(Clinics::find($id));
     }
 
     /**
