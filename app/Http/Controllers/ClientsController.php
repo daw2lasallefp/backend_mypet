@@ -86,7 +86,7 @@ class ClientsController extends Controller
     }
 
 
-    public function register(Request $request)
+    public function clientsregister(Request $request)
     {
 
         //Recoger datos usuario post
@@ -136,12 +136,6 @@ class ClientsController extends Controller
 
 
                 var_dump($clients);die();
-
-
-
-
-
-
                 //Mensaje error o no
                 $data = array(
 
