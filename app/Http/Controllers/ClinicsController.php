@@ -14,7 +14,7 @@ class ClinicsController extends Controller
      */
     public function index()
     {
-        //
+        return clinics::all()->toJson();
     }
 
     /**
@@ -44,9 +44,9 @@ class ClinicsController extends Controller
      * @param  \App\Models\Clinics  $clinics
      * @return \Illuminate\Http\Response
      */
-    public function show(Clinics $clinics)
+    public function show($id)
     {
-        //
+        return Clinics::find($id)->toJson();
     }
 
     /**
