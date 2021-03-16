@@ -17,11 +17,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
 
+
+// });
+Route::post('registerEmployee', 'App\Http\Controllers\EmployeesController@register');
+Route::post('loginEmployee', 'App\Http\Controllers\EmployeesController@authenticate');
+
+Route::group(['middleware' => ['jwt.verify']], function() {
+
+    Route::get('employee','App\Http\Controllers\EmployeesController@getAuthenticatedUser');
 
 });
+
 //Clients
 Route::post('/clientsregister', [ClientsController::class, 'clientsregister']);
 Route::post('/clientslogin', [ClientsController::class, 'clientslogin']);
