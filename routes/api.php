@@ -18,11 +18,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
 
+
+// });
+Route::post('registerEmployee', 'App\Http\Controllers\EmployeesController@register');
+Route::post('loginEmployee', 'App\Http\Controllers\EmployeesController@authenticate');
+
+Route::group(['middleware' => ['jwt.verify']], function() {
+
+    Route::get('employee','App\Http\Controllers\EmployeesController@getAuthenticatedUser');
 
 });
+
 //Clients
 Route::post('/clientsregister', [ClientsController::class, 'clientsregister']);
 Route::post('/clientslogin', [ClientsController::class, 'clientslogin']);
@@ -36,6 +45,7 @@ Route::put('/vaccines/{id}', [VaccinesController::class, 'update']);
 //Clinics
 Route::get('/clinics', [ClinicsController::class, 'index']);
 Route::get('/clinics/{id}', [ClinicsController::class, 'show']);
+Route::put('/clinics/{id}', [ClinicsController::class, 'update']);
 
 //Pets
 Route::get('/pets', [PetsController::class, 'index']);
@@ -43,3 +53,6 @@ Route::get('/pets/{id}', [PetsController::class, 'show']);
 Route::post('/pets', [PetsController::class, 'store']);
 Route::put('/pets/{id}', [PetsController::class, 'update']);
 Route::delete('/pets/{id}', [PetsController::class, 'delete']);
+
+
+

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Clinics;
 use Illuminate\Http\Request;
+use Exception;
+
 
 class ClinicsController extends Controller
 {
@@ -14,7 +16,7 @@ class ClinicsController extends Controller
      */
     public function index()
     {
-        return response()->json(clinics::all());
+        return response()->json(Clinics::all());
     }
 
     /**
@@ -67,9 +69,25 @@ class ClinicsController extends Controller
      * @param  \App\Models\Clinics  $clinics
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Clinics $clinics)
+    public function update(Request $request, $id)
     {
-        //
+        try{
+            $itemToUpdate = Clinics::findOrFail($id);
+            $itemToUpdate->name = $request->input('name');
+            $itemToUpdate->city = $request->input('city');
+            $itemToUpdate->address = $request->input('address');
+            $itemToUpdate->phone = $request->input('phone');
+            $itemToUpdate->email = $request->input('email');
+        } catch (Exception $e) {
+            return response()->json(['message'=>'There is no such clinic']);
+        }
+
+        try {
+            $itemToUpdate->save();
+            return response()->json(Clinics::find($id));
+        } catch (Exception $e) {
+            return response()->json(['message'=>$e->getMessage()]);
+        }
     }
 
     /**
