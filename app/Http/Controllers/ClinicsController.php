@@ -79,14 +79,14 @@ class ClinicsController extends Controller
             $itemToUpdate->phone = $request->input('phone');
             $itemToUpdate->email = $request->input('email');
         } catch (Exception $e) {
-            return response()->json(['message'=>'There is no such clinic']);
+            return response()->json(['message'=>'There is no such clinic'],404);
         }
 
         try {
             $itemToUpdate->save();
             return response()->json(Clinics::find($id));
         } catch (Exception $e) {
-            return response()->json(['message'=>$e->getMessage()]);
+            return response()->json(['message'=>$e->getMessage()],500);
         }
     }
 
