@@ -74,11 +74,11 @@ class VaccinesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $article = Vaccines::findOrFail($id);
+        $vaccine = Vaccines::findOrFail($id);
 
-        $article->update(['available' => $request->available]);
+        $vaccine->update(['available' => $request->available]);
 
-        return $article;
+        return $vaccine;
     }
 
     /**

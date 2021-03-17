@@ -18,5 +18,10 @@ class Pets extends Model
         'species',
         'client_id',
         'breed',
+        'available'
+    ];
+
+    protected $casts = [
+        'available' => 'boolean',
     ];
 }

@@ -12,9 +12,24 @@ class PetsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->has(['client_id', 'available'])){
+
+            return Pets::all()->where('client_id', $request->client_id)
+            ->where('available',filter_var($request->available, FILTER_VALIDATE_BOOLEAN));
+
+        } elseif ($request->has('client_id') && !$request->has('available')) {
+
+            return Pets::all()->where('client_id', $request->client_id);
+
+        }elseif (!$request->has('client_id') && $request->has('available')) {
+
+            return Pets::all()->where('available', filter_var($request->available, FILTER_VALIDATE_BOOLEAN));
+
+        }  else {
+            return Pets::all();
+        }
     }
 
     /**
@@ -24,7 +39,7 @@ class PetsController extends Controller
      */
     public function create()
     {
-        //
+      //
     }
 
     /**
@@ -35,7 +50,7 @@ class PetsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return Pets::create($request->all());
     }
 
     /**
@@ -44,9 +59,9 @@ class PetsController extends Controller
      * @param  \App\Models\Pets  $pets
      * @return \Illuminate\Http\Response
      */
-    public function show(Pets $pets)
+    public function show($id)
     {
-        //
+        return Pets::find($id);
     }
 
     /**
@@ -67,9 +82,24 @@ class PetsController extends Controller
      * @param  \App\Models\Pets  $pets
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Pets $pets)
+    public function update(Request $request, $id)
     {
-        //
+        $pet = Pets::findOrFail($id);
+
+        $pet->update($request->all);
+
+        return $pet;
+    }
+
+    public function delete($id)
+    {
+        $pet = Pets::findOrFail($id);
+
+        $pet->available = false;
+
+        $pet->save();
+
+        return $pet;
     }
 
     /**
