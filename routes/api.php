@@ -4,6 +4,7 @@ use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\ClinicsController;
 use App\Http\Controllers\VaccinesController;
 use App\Http\Controllers\EmployeesController;
+use App\Http\Controllers\PetsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -46,11 +47,21 @@ Route::post('/clientslogin', [ClientsController::class, 'clientslogin']);
 
 //Vaccines
 Route::get('/vaccines', [VaccinesController::class, 'index']);
-    Route::get('/vaccines/{id}', [VaccinesController::class, 'show']);
-    Route::post('/vaccines', [VaccinesController::class, 'store']);
-    Route::put('/vaccines/{id}', [VaccinesController::class, 'update']);
+Route::get('/vaccines/{id}', [VaccinesController::class, 'show']);
+Route::post('/vaccines', [VaccinesController::class, 'store']);
+Route::put('/vaccines/{id}', [VaccinesController::class, 'update']);
 
 //Clinics
 Route::get('/clinics', [ClinicsController::class, 'index']);
 Route::get('/clinics/{id}', [ClinicsController::class, 'show']);
 Route::put('/clinics/{id}', [ClinicsController::class, 'update']);
+
+//Pets
+Route::get('/pets', [PetsController::class, 'index']);
+Route::get('/pets/{id}', [PetsController::class, 'show']);
+Route::post('/pets', [PetsController::class, 'store']);
+Route::put('/pets/{id}', [PetsController::class, 'update']);
+Route::delete('/pets/{id}', [PetsController::class, 'delete']);
+
+
+
