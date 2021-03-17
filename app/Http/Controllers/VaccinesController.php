@@ -51,7 +51,12 @@ class VaccinesController extends Controller
      */
     public function show($id)
     {
-        return Vaccines::find($id);
+        $vaccine = Vaccines::find($id);
+        if ($vaccine == null) {
+            return response()->json(null, 404);
+        } else {
+            return response()->json($vaccine);
+        }
     }
 
     /**
@@ -70,15 +75,18 @@ class VaccinesController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Vaccines  $vaccines
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
-        $article = Vaccines::findOrFail($id);
+        $vaccine = Vaccines::find($id);
 
-        $article->update(['available' => $request->available]);
-
-        return $article;
+        if ($vaccine == null) {
+            return response()->json(null, 404);
+        } else {
+            $vaccine->update(['available' => $request->available]);
+            return response()->json($vaccine);
+            }
     }
 
     /**
