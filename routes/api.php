@@ -3,6 +3,7 @@
 use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\ClinicsController;
 use App\Http\Controllers\VaccinesController;
+use App\Http\Controllers\EmployeesController;
 use App\Http\Controllers\PetsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -23,14 +24,22 @@ use Illuminate\Support\Facades\Route;
 
 
 // });
-Route::post('registerEmployee', 'App\Http\Controllers\EmployeesController@register');
-Route::post('loginEmployee', 'App\Http\Controllers\EmployeesController@authenticate');
+//Employees
+Route::post('registerEmployee', [EmployeesController::class, 'register']);
+Route::post('loginEmployee', [EmployeesController::class, 'authenticate']);
 
 Route::group(['middleware' => ['jwt.verify']], function() {
 
-    Route::get('employee','App\Http\Controllers\EmployeesController@getAuthenticatedUser');
+    Route::get('employee',[EmployeesController::class, 'getAuthenticatedUser']);
 
 });
+
+
+Route::get('/employees', [EmployeesController::class, 'index']);
+    Route::get('/employees/{id}', [EmployeesController::class, 'show']);
+    Route::post('/employees', [EmployeesController::class, 'store']);
+    Route::put('/employees/{id}', [EmployeesController::class, 'update']);
+
 
 //Clients
 Route::post('/clientsregister', [ClientsController::class, 'clientsregister']);
