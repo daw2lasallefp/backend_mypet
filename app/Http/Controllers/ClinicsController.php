@@ -71,17 +71,22 @@ class ClinicsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $itemToUpdate = Clinics::find($id);
-        $itemToUpdate->name = $request->input('name');
-        $itemToUpdate->city = $request->input('city');
-        $itemToUpdate->address = $request->input('address');
-        $itemToUpdate->phone = $request->input('phone');
-        $itemToUpdate->email = $request->input('email');
+        try{
+            $itemToUpdate = Clinics::findOrFail($id);
+            $itemToUpdate->name = $request->input('name');
+            $itemToUpdate->city = $request->input('city');
+            $itemToUpdate->address = $request->input('address');
+            $itemToUpdate->phone = $request->input('phone');
+            $itemToUpdate->email = $request->input('email');
+        } catch (Exception $e) {
+            return response()->json(['message'=>'There is no such clinic']);
+        }
+
         try {
             $itemToUpdate->save();
             return response()->json(Clinics::find($id));
         } catch (Exception $e) {
-            return $e->getMessage();
+            return response()->json(['message'=>$e->getMessage()]);
         }
     }
 
