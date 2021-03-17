@@ -57,11 +57,17 @@ class PetsController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Pets  $pets
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
-        return Pets::find($id);
+        $pet = Pets::find($id);
+        if ($pet == null) {
+            return response()->json(null, 404);
+        } else {
+          return response()->json($pet);
+        }
+
     }
 
     /**
@@ -80,26 +86,32 @@ class PetsController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Pets  $pets
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
-        $pet = Pets::findOrFail($id);
+        $pet = Pets::find($id);
 
-        $pet->update($request->all);
-
-        return $pet;
+        if ($pet == null) {
+            return response()->json(null, 404);
+        } else {
+            $pet->update(['name' => $request->name, 'sex' => $request->sex, 'weight' => $request->weight,
+                'age' => $request->age, 'species' => $request->species, 'breed' => $request->breed]);
+            $pet->save();
+            return response()->json($pet);
+        }
     }
 
     public function delete($id)
     {
-        $pet = Pets::findOrFail($id);
-
-        $pet->available = false;
-
-        $pet->save();
-
-        return $pet;
+        $pet = Pets::find($id);
+        if ($pet == null) {
+            return response()->json(null, 404);
+        } else {
+            $pet->available = false;
+            $pet->save();
+            return response()->json($pet);
+        }
     }
 
     /**
