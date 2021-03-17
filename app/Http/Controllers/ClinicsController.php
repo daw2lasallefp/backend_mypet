@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Clinics;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Exception;
 
 
@@ -73,13 +74,26 @@ class ClinicsController extends Controller
     {
         try{
             $itemToUpdate = Clinics::findOrFail($id);
+        } catch (Exception $e) {
+            return response()->json(['message'=>'There is no such clinic'],404);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|alpha',
+            'city' => 'required|alpha',
+            'address' => 'required',
+            'phone' => 'required|alpha_num',
+            'email' => 'required|email',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(),400);
+        } else {
             $itemToUpdate->name = $request->input('name');
             $itemToUpdate->city = $request->input('city');
             $itemToUpdate->address = $request->input('address');
             $itemToUpdate->phone = $request->input('phone');
             $itemToUpdate->email = $request->input('email');
-        } catch (Exception $e) {
-            return response()->json(['message'=>'There is no such clinic'],404);
         }
 
         try {
