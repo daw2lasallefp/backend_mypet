@@ -51,8 +51,8 @@ class EmployeesController extends Controller
             'email' => 'required|string|email|max:255|unique:employees',
             'password' => 'required|string|min:6',
             'admin' => 'required|bool',
-            'work_shift' => 'required|string|max:255',
-            'speciality_id' => 'required',
+            'workShifts' => 'required|string|max:255',
+            'specialities' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -65,8 +65,8 @@ class EmployeesController extends Controller
             'email' => $request->get('email'),
             'password' => Hash::make($request->get('password')),
             'admin' => $request->get('admin'),
-            'work_shift' => $request->get('work_shift'),
-            'speciality_id' => $request->get('speciality_id'),
+            'work_shift' => $request->get('workShifts'),
+            'speciality_id' => $request->get('specialities'),
         ]);
 
         $token = JWTAuth::fromUser($employee);
