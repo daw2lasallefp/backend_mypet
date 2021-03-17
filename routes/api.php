@@ -44,3 +44,4 @@ Route::get('/vaccines', [VaccinesController::class, 'index']);
 //Clinics
 Route::get('/clinics', [ClinicsController::class, 'index']);
 Route::get('/clinics/{id}', [ClinicsController::class, 'show']);
+Route::put('/clinics/{id}', [ClinicsController::class, 'update']);
