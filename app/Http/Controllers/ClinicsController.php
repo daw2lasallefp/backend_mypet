@@ -16,7 +16,7 @@ class ClinicsController extends Controller
      */
     public function index()
     {
-        return response()->json(clinics::all());
+        return response()->json(Clinics::all());
     }
 
     /**
