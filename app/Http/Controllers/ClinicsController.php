@@ -79,15 +79,15 @@ class ClinicsController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|alpha',
-            'city' => 'required|alpha',
+            'name' => 'required',
+            'city' => 'required',
             'address' => 'required',
             'phone' => 'required|alpha_num',
             'email' => 'required|email',
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(),400);
+            return response()->json(['message' => $validator->errors()->all()],400);
         } else {
             $itemToUpdate->name = $request->input('name');
             $itemToUpdate->city = $request->input('city');
