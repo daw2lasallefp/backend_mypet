@@ -39,8 +39,14 @@ class VaccinesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
+
     {
-        return Vaccines::create($request->all());
+        $vaccine = Vaccines::all()->where('name', $request->name);
+        if (empty($vaccine)) {
+            return Vaccines::create($request->all());
+        }else{
+            return response()->json(null, 409);
+        }
     }
 
     /**
