@@ -36,13 +36,13 @@ class VaccinesController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
 
     {
         $vaccine = Vaccines::all()->where('name', $request->name);
-        if (empty($vaccine)) {
+        if ($vaccine->isEmpty()) {
             return Vaccines::create($request->all());
         }else{
             return response()->json(null, 409);
