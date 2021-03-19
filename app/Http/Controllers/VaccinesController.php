@@ -90,7 +90,7 @@ class VaccinesController extends Controller
         if ($vaccine == null) {
             return response()->json(null, 404);
         } else {
-            $vaccine->update(['available' => $request->available]);
+            $vaccine->update(['available' => filter_var($request->available, FILTER_VALIDATE_BOOLEAN)]);
             return response()->json($vaccine);
             }
     }
