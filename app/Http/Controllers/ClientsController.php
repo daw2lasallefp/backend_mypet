@@ -149,7 +149,7 @@ class ClientsController extends Controller
 
 
   
-    public function getAuthenticatedClients()
+    public function getAuthenticatedUSer()
     {
         try {
             if (!$clients = JWTAuth::parseToken()->authenticate()) {
