@@ -2,9 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Validator;
+
 use App\Models\Clients;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Exception;
+use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
+use Tymon\JWTAuth\Exceptions\TokenBlacklistedException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 class ClientsController extends Controller
 {
@@ -16,7 +25,12 @@ class ClientsController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            $clients =Clients::all();
+        } catch (Exception $e) {
+            return response()->json(['response_body' => $e->getMessage()], 500);
+        }
+        return response()->json($clients);
     }
 
     /**
@@ -89,76 +103,69 @@ class ClientsController extends Controller
     public function clientsregister(Request $request)
     {
 
-        //Recoger datos usuario post
-        $json = $request->input('json', null);
-
-        //Decodificar json
-        $params = json_decode($json); //objeto
-        $params_array = json_decode($json, true); //array
-
-        if (!empty($params) && !empty($params_array)) {
-            //limpiar datos
-
-            $params_array = array_map('trim', $params_array);
 
             //Validar datos
-            $validate = Validator::make($params_array, [
+            $validate = Validator::make($request->all(), [
                 'name' => 'required|alpha',
                 'surname' => 'required|alpha',
-                'email' => 'required|email|unique:users',
+                'email' => 'required|email|unique:clients',
                 'password' => 'required',
                 'phone' => 'required|numeric'
             ]);
-  //Comprobar si el usuario existe, duplicado
+            //Comprobar si el usuario existe, duplicado
             if ($validate->fails()) {
-                //Validacion fallada
-                $data = array(
-
-                    'status' => 'error',
-                    'code' => 404,
-                    'message' => 'El cliente no se ha creado',
-                    'errors' => $validate->errors()
-                );
-            } else {
-                //Validacion ok
-
-                //cifrar contraseña
-                $pwd= password_hash($params->password, PASSWORD_BCRYPT, ['cost' => 4]);
+                return response()->json($validate->errors()->toJson(), 400);
+            } 
+               
 
               
                 //Crear cliente
-                $clients = new Clients();
-                $clients->name= $params_array['name'];
-                $clients->surname= $params_array['surname'];
-                $clients->email= $params_array['email'];
-                $clients->password= $pwd;
-                $clients->phone= $params_array['phone'];
+                $clients = Clients::create([
+                    'name' => $request->get('name'),
+                    'surname' => $request->get('surname'),
+                    'email' => $request->get('email'),
+                    'password' => Hash::make($request->get('password')),
+                    'phone' => $request->get('phone')
+                 ]);
 
+        $token = JWTAuth::fromUser($clients);
 
-                var_dump($clients);die();
-                //Mensaje error o no
-                $data = array(
-
-                    'status' => 'success',
-                    'code' => 200,
-                    'message' => 'El cliente  se ha creado  correctamente'
-
-                );
-            }
-        } else {
-            $data = array(
-
-                'status' => 'error',
-                'code' => 404,
-                'message' => 'Datos  enviados no son correctos'
-
-            );
-        }
-     return response()->json($data, $data['code']);
+        return response()->json(compact('clients', 'token'), 201);
     }
 
-    public function login(Request $request)
+
+    public function authenticate(Request $request)
     {
-        return "Acción de loggin de usuarios";
+          //credenciales a comparar
+          $credentials = $request->only('email', 'password');
+          try {
+  
+              if (!$token = JWTAuth::attempt($credentials)) {
+                  return response()->json(['error' => 'invalid_credentials'], 400);
+              }
+          } catch (JWTException $e) {
+              return response()->json(['error' => 'could_not_create_token'], 500);
+          }
+          return response()->json(compact('token'));
     }
+
+
+  
+    public function getAuthenticatedClients()
+    {
+        try {
+            if (!$clients = JWTAuth::parseToken()->authenticate()) {
+                return response()->json(['user_not_found'], 404);
+            }
+        } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
+            return response()->json(['token_expired'], $e->getStatusCode());
+        } catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+            return response()->json(['token_invalid'], $e->getStatusCode());
+        } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
+            return response()->json(['token_absent'], $e->getStatusCode());
+        }
+        return response()->json(compact('clients'));
+    }
+
+
 }

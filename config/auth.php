@@ -44,6 +44,7 @@ return [
         'api' => [
             'driver' => 'jwt',
             'provider' => 'employees',
+            'provider' => 'clients',
             'hash' => false,
         ],
     ],
@@ -74,6 +75,10 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Employees::class,
         ],
+        'clients' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Clients::class,
+        ],
 
         // 'users' => [
         //     'driver' => 'database',
@@ -103,6 +108,13 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
+
+        'clients' =>[
+            'provider' => 'clients',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ]
     ],
 
     /*
