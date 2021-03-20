@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
+
 use Exception;
 
 class EmployeesController extends Controller
@@ -16,9 +19,8 @@ class EmployeesController extends Controller
     {
         $credentials = $request->only('email', 'password');
         try {
-
             if (!$token = JWTAuth::attempt($credentials)) {
-                return response()->json(['error' => 'invalid_credentials'], 400);
+                return response()->json(['error' => 'Email y/o contraseña incorrectos'], 400);
             }
         } catch (JWTException $e) {
             return response()->json(['error' => 'could_not_create_token'], 500);
@@ -32,11 +34,11 @@ class EmployeesController extends Controller
             if (!$user = JWTAuth::parseToken()->authenticate()) {
                 return response()->json(['user_not_found'], 404);
             }
-        } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
+        } catch (TokenExpiredException $e) {
             return response()->json(['token_expired'], $e->getStatusCode());
-        } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+        } catch (TokenInvalidException $e) {
             return response()->json(['token_invalid'], $e->getStatusCode());
-        } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
+        } catch (JWTException $e) {
             return response()->json(['token_absent'], $e->getStatusCode());
         }
         return response()->json(compact('user'));
@@ -45,20 +47,26 @@ class EmployeesController extends Controller
 
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'surname' => 'required|string|max:255',
+        $validatorEmail = Validator::make($request->all(), [
             'email' => 'required|string|email|max:255|unique:employees',
-            'password' => 'required|string|min:6',
-            'admin' => 'required|bool',
-            'workShifts' => 'required|string|max:255',
-            'specialities' => 'required',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors()->toJson(), 400);
+        $validatorFields = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'surname' => 'required|string|max:255',
+            'password' => 'required|string',
+            'admin' => 'required|bool',
+            'workShifts' => 'required|string|max:255',
+            'specialities' => 'required|string',
+        ]);
+        $validatorsErrors = array();
+        // $validatorsErrors[] = $validatorFields->errors()->all();
+        // $validatorErrors[] = $validatorEmail->errors()->all();
+        $validatorsErrors = array_merge($validatorFields->errors()->all(), $validatorEmail->errors()->all());
+        if ($validatorFields->fails()) {
+            return response()->json(["message" => $validatorsErrors], 400);
         }
-
+   
         $employee = Employees::create([
             'name' => $request->get('name'),
             'surname' => $request->get('surname'),
