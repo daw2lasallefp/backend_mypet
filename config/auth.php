@@ -77,6 +77,7 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Employees::class,
         ],
+        
         'clients' => [
             'driver' => 'eloquent',
             'model' => App\Models\Clients::class,
