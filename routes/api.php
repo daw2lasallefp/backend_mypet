@@ -46,11 +46,12 @@ Route::post('clientsRegister', [ClientsController::class, 'clientsregister']);
 Route::post('clientsLogin', [ClientsController::class, 'authenticate']);
 Route::group(['middleware' => ['jwt.verify']], function() {
 
-    Route::get('clients',[ClientsController::class, 'getAuthenticatedUser']);
+    Route::get('clientsUser',[ClientsController::class, 'getAuthenticatedUser']);
 
 });
+Route::post('clientsLogout', [ClientsController::class, 'logout']);
 
-Route::get('/clients', [ClientsController::class, 'index']);
+Route::get('/clientsList', [ClientsController::class, 'index']);
     Route::get('/clients/{id}', [ClientsController::class, 'show']);
     Route::post('/clients',[ClientsController::class, 'store']);
     Route::put('/clients/{id}', [ClientsController::class, 'update']);

@@ -62,7 +62,7 @@ class ClientsController extends Controller
      */
     public function show(Clients $clients)
     {
-        //
+        
     }
 
     /**
@@ -83,9 +83,9 @@ class ClientsController extends Controller
      * @param  \App\Models\Clients  $clients
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Clients $clients)
+    public function update(Request $request)
     {
-        //
+       
     }
 
     /**
@@ -147,7 +147,12 @@ class ClientsController extends Controller
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
         return response()->json(compact('token'));
+        
+       
+        
     }
+
+   
 
 
   
@@ -168,6 +173,14 @@ class ClientsController extends Controller
     }
 
 
+    public function logout() {
+        auth()->logout();
 
+        return response()->json(['message' => 'User successfully signed out']);
+    }
+
+    
+
+    
 
 }

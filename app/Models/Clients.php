@@ -20,6 +20,15 @@ class Clients extends Authenticatable implements JWTSubject
         'phone'
     ];
 
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+    
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
     public function getJWTIdentifier()
     {
         return $this->getKey();

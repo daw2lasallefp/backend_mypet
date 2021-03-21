@@ -72,6 +72,12 @@ return [
             'model' => App\Models\Employees::class,
             
         ],
+
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Clients::class,
+            
+        ],
        
         'employees' => [
             'driver' => 'eloquent',
