@@ -9,9 +9,11 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
-use Exception;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
+
+
+use Exception;
 
 class ClientsController extends Controller
 {
@@ -60,7 +62,7 @@ class ClientsController extends Controller
      */
     public function show(Clients $clients)
     {
-        //
+        
     }
 
     /**
@@ -81,9 +83,9 @@ class ClientsController extends Controller
      * @param  \App\Models\Clients  $clients
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Clients $clients)
+    public function update(Request $request)
     {
-        //
+       
     }
 
     /**
@@ -135,35 +137,50 @@ class ClientsController extends Controller
     public function authenticate(Request $request)
     {
           //credenciales a comparar
-          $credentials = $request->only('email', 'password');
-          try {
-  
-              if (!$token = JWTAuth::attempt($credentials)) {
-                  return response()->json(['error' => 'invalid_credentials'], 400);
-              }
-          } catch (JWTException $e) {
-              return response()->json(['error' => 'could_not_create_token'], 500);
-          }
-          return response()->json(compact('token'));
+         
+        $credential = $request->only('email', 'password');
+        try {
+            if (!$token = JWTAuth::attempt($credential)) {
+                return response()->json(['error' => 'incorrect_credentials'], 400);
+            }
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'could_not_create_token'], 500);
+        }
+        return response()->json(compact('token'));
+        
+       
+        
     }
 
+   
+
 
   
-    public function getAuthenticatedUSer()
+    public function getAuthenticatedUser()
     {
         try {
-            if (!$clients = JWTAuth::parseToken()->authenticate()) {
+            if (!$user = JWTAuth::parseToken()->authenticate()) {
                 return response()->json(['user_not_found'], 404);
             }
-        } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
+        } catch (TokenExpiredException $e) {
             return response()->json(['token_expired'], $e->getStatusCode());
-        } catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+        } catch (TokenInvalidException $e) {
             return response()->json(['token_invalid'], $e->getStatusCode());
-        } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
+        } catch (JWTException $e) {
             return response()->json(['token_absent'], $e->getStatusCode());
         }
-        return response()->json(compact('clients'));
+        return response()->json(compact('user'));
     }
 
+
+    public function logout() {
+        auth()->logout();
+
+        return response()->json(['message' => 'User successfully signed out']);
+    }
+
+    
+
+    
 
 }

@@ -83,6 +83,8 @@ class EmployeesController extends Controller
         return response()->json(compact('employee', 'token'), 201);
     }
 
+   
+
     /**
      * Display a listing of the resource.
      *
