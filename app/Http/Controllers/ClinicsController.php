@@ -17,7 +17,12 @@ class ClinicsController extends Controller
      */
     public function index()
     {
-        return response()->json(Clinics::all());
+        $clinic = Clinics::all();
+        if ($clinic->isEmpty()) {
+            return response()->json(null, 404);
+        } else {
+            return response()->json($clinic);
+        }
     }
 
     /**
@@ -49,7 +54,12 @@ class ClinicsController extends Controller
      */
     public function show($id)
     {
-        return response()->json(Clinics::find($id));
+        $clinic = Clinics::find($id);
+        if ($clinic) {
+            return response()->json($clinic);
+        } else {
+            return response()->json(null, 404);
+        }
     }
 
     /**
@@ -72,10 +82,10 @@ class ClinicsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        try{
+        try {
             $itemToUpdate = Clinics::findOrFail($id);
         } catch (Exception $e) {
-            return response()->json(['message'=>'There is no such clinic'],404);
+            return response()->json(['message' => 'There is no such clinic'], 404);
         }
 
         $validator = Validator::make($request->all(), [
@@ -87,7 +97,7 @@ class ClinicsController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors()->all()],400);
+            return response()->json(['message' => $validator->errors()->all()], 400);
         } else {
             $itemToUpdate->name = $request->input('name');
             $itemToUpdate->city = $request->input('city');
@@ -100,7 +110,7 @@ class ClinicsController extends Controller
             $itemToUpdate->save();
             return response()->json(Clinics::find($id));
         } catch (Exception $e) {
-            return response()->json(['message'=>$e->getMessage()],500);
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 
