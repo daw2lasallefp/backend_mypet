@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        //Specialities::factory(3)->create();
+        // Specialities::factory(3)->create();
         Employees::factory(10)->create();
         Clients::factory(10)->create();
         Clinics::factory(10)->create();
