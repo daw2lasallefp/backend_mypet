@@ -26,7 +26,7 @@ class ClientsController extends Controller
     public function index()
     {
         try {
-            $clients =Clients::all();
+            $clients =Clients::all()->where('available', true);
         } catch (Exception $e) {
             return response()->json(['response_body' => $e->getMessage()], 500);
         }
@@ -62,8 +62,13 @@ class ClientsController extends Controller
      */
     public function show($id)
     {
-        $clients = Clients::findOrFail($id);
-        return response()->json( $clients);
+        
+            $clients = Clients::show($id)
+            ->withTrashed()
+           ->first();
+        
+            return response()->json($clients, 200);
+        
     }
 
     /**
@@ -92,13 +97,13 @@ class ClientsController extends Controller
        
 
        if ( $clients == null) {
-           return response()->json(null, 404);
+           return response()->json(['response_body' => 'Cliente inexistente'], 404);
        } else {
         $clients->update(['name' => $request->name, 'surname' => $request->surname, 'email' => $request->email,
-               'password' => $request->password, 'phone' => $request->phone]);
+        'phone' => $request->phone]);
 
         $clients->save();
-        return response()->json( $clients);
+        return $this->show($id);
        }
     }
 
@@ -108,11 +113,19 @@ class ClientsController extends Controller
      * @param  \App\Models\Clients  $clients
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Clients $clients)
+    public function destroy($id)
     {
-        //
-    }
+        $clients = Clients::find($id);
+        if($clients === null){
+            return response()->json(['response_body'=>'Cliente no encontrado'],404);
+        }else{
+            $clients->available = false;
+            $clients->save();
+            return response()->json(['response_body' => $clients], 200);
+        }
 
+    }
+   
 
     public function clientsregister(Request $request)
     {
@@ -190,7 +203,7 @@ class ClientsController extends Controller
     public function logout() {
         auth()->logout();
 
-        return response()->json(['message' => 'User successfully signed out']);
+        return response()->json(['message' => 'Sesión cliente cerrada']);
     }
 
     
