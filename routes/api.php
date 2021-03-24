@@ -43,27 +43,20 @@ Route::get('/employees', [EmployeesController::class, 'index']);
 
 
 //Clients
-Route::post('clientsRegister', [ClientsController::class, 'clientsregister']);
-Route::post('clientsLogin', [ClientsController::class, 'authenticate']);
+Route::post('registerClients', [ClientsController::class, 'clientsregister']);
+Route::post('loginClients', [ClientsController::class, 'authenticate']);
 
 Route::group(['middleware' => ['jwt.verify']], function() {
 
-    Route::get('clientsUser',[ClientsController::class, 'getAuthenticatedUser']);
+    Route::post('userClients',[ClientsController::class, 'getAuthenticatedUser']);
 
 });
-Route::post('clientsLogout', [ClientsController::class, 'logout']);
-
-// Route::group(['middleware' => ['jwt.verify']], function() {
-
-//     Route::get('clients',[ClientsController::class, 'getAuthenticatedClients']);
-
-// });
-
-
+Route::post('logoutClients', [ClientsController::class, 'logout']);
 Route::get('/clientsList', [ClientsController::class, 'index']);
     Route::get('/clients/{id}', [ClientsController::class, 'show']);
     Route::post('/clients',[ClientsController::class, 'store']);
-    Route::put('/clients/{id}', [ClientsController::class, 'update']);
+    Route::put('/clients/update/{id}', [ClientsController::class, 'update']);
+    Route::delete('/clients/delete/{id}', [ClientsController::class, 'destroy']);
 
 
 //Vaccines
