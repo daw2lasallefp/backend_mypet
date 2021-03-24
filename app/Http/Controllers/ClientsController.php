@@ -60,9 +60,10 @@ class ClientsController extends Controller
      * @param  \App\Models\Clients  $clients
      * @return \Illuminate\Http\Response
      */
-    public function show(Clients $clients)
+    public function show($id)
     {
-        
+        $clients = Clients::findOrFail($id);
+        return response()->json( $clients);
     }
 
     /**
@@ -71,9 +72,9 @@ class ClientsController extends Controller
      * @param  \App\Models\Clients  $clients
      * @return \Illuminate\Http\Response
      */
-    public function edit(Clients $clients)
+    public function edit($id)
     {
-        //
+      
     }
 
     /**
@@ -83,9 +84,22 @@ class ClientsController extends Controller
      * @param  \App\Models\Clients  $clients
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request,$id)
     {
+      
+     
+        $clients=Clients::find($id);
        
+
+       if ( $clients == null) {
+           return response()->json(null, 404);
+       } else {
+        $clients->update(['name' => $request->name, 'surname' => $request->surname, 'email' => $request->email,
+               'password' => $request->password, 'phone' => $request->phone]);
+
+        $clients->save();
+        return response()->json( $clients);
+       }
     }
 
     /**
