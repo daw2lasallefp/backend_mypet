@@ -61,13 +61,12 @@ class EmployeesController extends Controller
             'specialities' => 'required|string',
         ]);
         $validatorsErrors = array();
-        // $validatorsErrors[] = $validatorFields->errors()->all();
-        // $validatorErrors[] = $validatorEmail->errors()->all();
+
         $validatorsErrors = array_merge($validatorFields->errors()->all(), $validatorEmail->errors()->all());
         if ($validatorFields->fails()) {
             return response()->json(["message" => $validatorsErrors], 400);
         }
-   
+
         $employee = Employees::create([
             'name' => $request->get('name'),
             'surname' => $request->get('surname'),
@@ -83,19 +82,11 @@ class EmployeesController extends Controller
         return response()->json(compact('employee', 'token'), 201);
     }
 
-   
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     */
 
     public function index(Request $request)
     {
         try {
-            $employees = Employees::all();
+            $employees = Employees::all()->where('available', true);
         } catch (Exception $e) {
             return response()->json(['response_body' => $e->getMessage()], 500);
         }
@@ -103,67 +94,35 @@ class EmployeesController extends Controller
     }
 
 
-    //     /**
-    //      * Show the form for creating a new resource.
-    //      *
-    //      * @return \Illuminate\Http\Response
-    //      */
-    //     public function create()
-    //     {
+    public function update(Request $request, $id)
+    {
+        $employee = Employees::find($id);
+        if ($employee === null) {
+            return response()->json(['response_body' => 'El empleado no se encuentra en la base de datos'], 404);
+        } else {
+            $employee->update([
+                'name' => $request->name,
+                'surname' => $request->surname,
+                'email' => $request->email,
+                'work_shift' => $request->workShifts,
+                'admin' => $request->admin,
+                'speciality_id' => $request->specialities,
+            ]);
 
-    //     }
+            return response()->json(['response_body' => $employee], 200);
+        }
+    }
 
-    //     /**
-    //      * Store a newly created resource in storage.
-    //      *
-    //      * @param  \Illuminate\Http\Request  $request
-    //      * @return \Illuminate\Http\Response
-    //      */
-    //     public function store(Request $request)
-    //     {
-    //         return Employees::create($request->all());
-    //     }
 
-    //     /**
-    //      * Display the specified resource.
-    //      *
-    //      * @return \Illuminate\Http\Response
-    //      */
-    //     public function show($id)
-    //     {
-    //         return Employees::find($id);
-    //     }
-
-    //     /**
-    //      * Show the form for editing the specified resource.
-    //      *
-    //      * @return \Illuminate\Http\Response
-    //      */
-    //     public function edit(Employees $employee)
-    //     {
-    //         //
-    //     }
-
-    //     /**
-    //      * Update the specified resource in storage.
-    //      *
-    //      * @param  \Illuminate\Http\Request  $request
-    //      * @return \Illuminate\Http\Response
-    //      */
-    //     public function update(Request $request, $id)
-    //     {
-
-    //     }
-
-    //     /**
-    //      * Remove the specified resource from storage.
-    //      *
-    //      * @return \Illuminate\Http\Response
-    //      */
-    //     public function destroy(Employees $employee)
-    //     {
-    //         //
-    //     }
-
+    public function delete($id)
+    {
+        $employee = Employees::find($id);
+        if ($employee === null) {
+            return response()->json(['response_body' => 'El empleado no se encuentra en la base de datos'], 404);
+        } else {
+            $employee->available = false;
+            return response()->json(['response_body' => $employee], 200);
+        }
+    }
 
 }

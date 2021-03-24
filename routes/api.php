@@ -5,6 +5,7 @@ use App\Http\Controllers\ClinicsController;
 use App\Http\Controllers\VaccinesController;
 use App\Http\Controllers\EmployeesController;
 use App\Http\Controllers\PetsController;
+use App\Http\Controllers\VaccinationsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -38,7 +39,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
 Route::get('/employees', [EmployeesController::class, 'index']);
     Route::get('/employees/{id}', [EmployeesController::class, 'show']);
-    Route::post('/employees', [EmployeesController::class, 'store']);
+    Route::delete('/employees/{id}', [EmployeesController::class, 'delete']);
     Route::put('/employees/{id}', [EmployeesController::class, 'update']);
 
 
@@ -76,6 +77,11 @@ Route::get('/pets/{id}', [PetsController::class, 'show']);
 Route::post('/pets', [PetsController::class, 'store']);
 Route::put('/pets/{id}', [PetsController::class, 'update']);
 Route::delete('/pets/{id}', [PetsController::class, 'delete']);
+
+//Vaccinations
+Route::get('/vaccinations', [VaccinationsController::class, 'index']);
+Route::get('/vaccinations/{pet_id}', [VaccinationsController::class, 'show']);
+
 
 
 
