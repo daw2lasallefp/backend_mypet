@@ -31,10 +31,10 @@ class ClientsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $clients =Clients::all();
+            $clients =Clients::all()->where('available', true);
         } catch (Exception $e) {
             return response()->json(['response_body' => $e->getMessage()], 500);
         }
@@ -68,8 +68,14 @@ class ClientsController extends Controller
      * @param  \App\Models\Clients  $clients
      * @return \Illuminate\Http\Response
      */
-    public function show(Clients $clients)
+    public function show($id)
     {
+        
+            $clients = Clients::show($id)
+            ->withTrashed()
+           ->first();
+        
+            return response()->json($clients, 200);
         
     }
 
@@ -79,9 +85,9 @@ class ClientsController extends Controller
      * @param  \App\Models\Clients  $clients
      * @return \Illuminate\Http\Response
      */
-    public function edit(Clients $clients)
+    public function edit($id)
     {
-        //
+      
     }
 
     /**
@@ -91,9 +97,22 @@ class ClientsController extends Controller
      * @param  \App\Models\Clients  $clients
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request,$id)
     {
+      
+     
+        $clients=Clients::find($id);
        
+
+       if ( $clients == null) {
+           return response()->json(['response_body' => 'Cliente inexistente'], 404);
+       } else {
+        $clients->update(['name' => $request->name, 'surname' => $request->surname, 'email' => $request->email,
+        'phone' => $request->phone]);
+
+        $clients->save();
+        return $this->show($id);
+       }
     }
 
     /**
@@ -102,11 +121,19 @@ class ClientsController extends Controller
      * @param  \App\Models\Clients  $clients
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Clients $clients)
+    public function destroy($id)
     {
-        //
-    }
+        $clients = Clients::find($id);
+        if($clients === null){
+            return response()->json(['response_body'=>'Cliente no encontrado'],404);
+        }else{
+            $clients->available = false;
+            $clients->save();
+            return response()->json(['response_body' => $clients], 200);
+        }
 
+    }
+   
 
     public function clientsregister(Request $request)
     {
@@ -184,7 +211,7 @@ class ClientsController extends Controller
     public function logout() {
         auth()->logout();
 
-        return response()->json(['message' => 'User successfully signed out']);
+        return response()->json(['message' => 'Sesión cliente cerrada']);
     }
 
     
