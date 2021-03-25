@@ -10,12 +10,20 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
-
+use Illuminate\Support\Facades\Config;
 
 use Exception;
 
 class EmployeesController extends Controller
 {
+    function __construct()
+    {
+        Config::set('jwt.user', Employees::class);
+        Config::set('auth.providers', ['users' => [
+            'driver' => 'eloquent',
+            'model' => Employees::class,
+        ]]);
+    }
     public function authenticate(Request $request)
     {
         $credentials = $request->only('email', 'password');
@@ -109,7 +117,7 @@ class EmployeesController extends Controller
                 'speciality_id' => $request->specialities,
             ]);
 
-            return response()->json(['response_body' => $employee], 200);
+            return response()->json($employee, 200);
         }
     }
 
@@ -125,4 +133,5 @@ class EmployeesController extends Controller
         }
     }
 
+    //TODO: 
 }

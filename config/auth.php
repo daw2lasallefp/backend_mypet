@@ -38,14 +38,12 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'employees',
-            'provider' => 'clients',
+            'provider' => 'users',
         ],
 
         'api' => [
             'driver' => 'jwt',
-            'provider' => 'employees',
-            'provider' => 'clients',
+            'provider' => 'users',
             'hash' => false,
         ],
     ],
@@ -68,25 +66,6 @@ return [
     */
 
     'providers' => [
-
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Employees::class,
-            
-        ],
-
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Clients::class,
-            
-        ],
-       
-
-        // 'users' => [
-        //     'driver' => 'eloquent',
-        //     'model' => App\Models\Employees::class,
-        // ],
-
         'employees' => [
             'driver' => 'eloquent',
             'model' => App\Models\Employees::class,
@@ -97,10 +76,10 @@ return [
             'model' => App\Models\Clients::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'users' => [
+            'driver' => 'database',
+            'table' => 'users',
+        ],
     ],
 
     /*
