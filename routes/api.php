@@ -81,6 +81,7 @@ Route::delete('/pets/{id}', [PetsController::class, 'delete']);
 //Vaccinations
 Route::get('/vaccinations', [VaccinationsController::class, 'index']);
 Route::get('/vaccinations/{pet_id}', [VaccinationsController::class, 'show']);
+Route::post('/vaccinations', [VaccinationsController::class, 'store']);
 Route::put('/vaccinations/{vaccination_id}', [VaccinationsController::class, 'update']);
 
 
