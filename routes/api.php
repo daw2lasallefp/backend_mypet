@@ -49,13 +49,13 @@ Route::post('loginClients', [ClientsController::class, 'authenticate']);
 
 Route::group(['middleware' => ['jwt.verify']], function() {
 
-    Route::post('userClients',[ClientsController::class, 'getAuthenticatedUser']);
+    Route::get('userClients',[ClientsController::class, 'getAuthenticatedUser']);
 
 });
+
 Route::post('logoutClients', [ClientsController::class, 'logout']);
 Route::get('/clientsList', [ClientsController::class, 'index']);
     Route::get('/clients/{id}', [ClientsController::class, 'show']);
-    Route::post('/clients',[ClientsController::class, 'store']);
     Route::put('/clients/update/{id}', [ClientsController::class, 'update']);
     Route::delete('/clients/delete/{id}', [ClientsController::class, 'destroy']);
 
