@@ -11,13 +11,21 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
+use Illuminate\Support\Facades\Config;
 
 
 use Exception;
 
 class ClientsController extends Controller
 {
-
+    function __construct()
+    {
+        Config::set('jwt.user', Clients::class);
+        Config::set('auth.providers', ['users' => [
+            'driver' => 'eloquent',
+            'model' => Clients::class,
+        ]]);
+    }
     /**
      * Display a listing of the resource.
      *

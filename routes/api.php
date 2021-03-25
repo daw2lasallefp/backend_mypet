@@ -5,7 +5,9 @@ use App\Http\Controllers\ClinicsController;
 use App\Http\Controllers\VaccinesController;
 use App\Http\Controllers\EmployeesController;
 use App\Http\Controllers\PetsController;
+use App\Http\Controllers\SpecialitiesController;
 use App\Http\Controllers\VaccinationsController;
+use App\Models\Specialities;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -42,6 +44,8 @@ Route::get('/employees', [EmployeesController::class, 'index']);
     Route::delete('/employees/{id}', [EmployeesController::class, 'delete']);
     Route::put('/employees/{id}', [EmployeesController::class, 'update']);
 
+//specialitiesRoute
+Route::get('specialities', [SpecialitiesController::class, 'index']);
 
 //Clients
 Route::post('registerClients', [ClientsController::class, 'clientsregister']);
