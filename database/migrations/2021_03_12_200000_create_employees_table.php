@@ -22,6 +22,7 @@ class CreateEmployeesTable extends Migration
             $table->string('work_shift')->nullable(false);
             $table->boolean('admin')->nullable(false);
             $table->unsignedBigInteger('speciality_id')->nullable(false);
+            $table->boolean('available')->nullable($value = false)->default(true);
             $table->timestamps();
 
             $table->foreign('speciality_id')->references('id')->on('specialities');
