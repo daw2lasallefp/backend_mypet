@@ -68,9 +68,19 @@ class VaccinationsController extends Controller
      * @param  \App\Models\Vaccinations  $vaccinations
      * @return \Illuminate\Http\Response
      */
-    public function show($pet_id)
+    public function showByPet($pet_id)
     {
         $vaccination = Vaccinations::where('pet_id', $pet_id)->get();
+        if ($vaccination->isEmpty()) {
+            return response()->json(null, 404);
+        } else {
+            return response()->json($vaccination);
+        }
+    }
+
+    public function showById($id)
+    {
+        $vaccination = Vaccinations::where('id', $id)->get();
         if ($vaccination->isEmpty()) {
             return response()->json(null, 404);
         } else {
