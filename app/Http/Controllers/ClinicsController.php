@@ -54,11 +54,11 @@ class ClinicsController extends Controller
      */
     public function show($id)
     {
-        $clinic = Clinics::find($id);
-        if ($clinic) {
-            return response()->json($clinic);
-        } else {
+        $clinic = Clinics::where('id', $id)->get();
+        if ($clinic->isEmpty()) {
             return response()->json(null, 404);
+        } else {
+            return response()->json($clinic);
         }
     }
 
