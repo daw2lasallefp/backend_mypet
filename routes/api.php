@@ -35,11 +35,12 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
     Route::get('employee',[EmployeesController::class, 'getAuthenticatedUser']);
     Route::get('clients',[ClientsController::class, 'getAuthenticatedClients']);
+    Route::get('/employees', [EmployeesController::class, 'index']);
 
 });
 
 
-Route::get('/employees', [EmployeesController::class, 'index']);
+
     Route::get('/employees/{id}', [EmployeesController::class, 'show']);
     Route::delete('/employees/{id}', [EmployeesController::class, 'delete']);
     Route::put('/employees/{id}', [EmployeesController::class, 'update']);

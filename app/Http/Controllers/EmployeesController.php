@@ -101,6 +101,16 @@ class EmployeesController extends Controller
         return response()->json($employees);
     }
 
+    public function show($id)
+    {
+        $employee = Employees::find($id);
+        if ($employee == null) {
+            return response()->json(null, 404);
+        } else {
+          return response()->json(['response_body' => $employee]);
+        }
+
+    }
 
     public function update(Request $request, $id)
     {
