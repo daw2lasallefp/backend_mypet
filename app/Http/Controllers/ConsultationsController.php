@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Consultations;
+use App\Models\Pets;
 use Illuminate\Http\Request;
 
 class ConsultationsController extends Controller
@@ -12,9 +13,9 @@ class ConsultationsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($petId)
     {
-        //
+        return Consultations::all()->where('pet_id', $petId);
     }
 
     /**
@@ -33,9 +34,9 @@ class ConsultationsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $petId)
     {
-        //
+        return Consultations::create(array_merge($request->all(), ['pet_id' => $petId]));
     }
 
     /**

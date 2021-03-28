@@ -15,6 +15,5 @@ class Consultations extends Model
         'comments',
         'pet_id',
         'employee_id',
-       
     ];
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\EmployeesController;
 use App\Http\Controllers\PetsController;
 use App\Http\Controllers\SpecialitiesController;
 use App\Http\Controllers\VaccinationsController;
+use App\Http\Controllers\ConsultationsController;
 use App\Models\Specialities;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -92,6 +93,9 @@ Route::get('/vaccinations/{id}', [VaccinationsController::class, 'showById']);
 Route::post('/vaccinations', [VaccinationsController::class, 'store']);
 Route::put('/vaccinations/{vaccination_id}', [VaccinationsController::class, 'update']);
 
+//Consultation
+Route::get('/pets/{petId}/consultations', [ConsultationsController::class, 'index']);
+Route::post('/pets/{petId}/consultations', [ConsultationsController::class, 'store']);
 
 
 
