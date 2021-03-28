@@ -36,6 +36,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('employee',[EmployeesController::class, 'getAuthenticatedUser']);
     Route::get('clients',[ClientsController::class, 'getAuthenticatedClients']);
     Route::get('/employees', [EmployeesController::class, 'index']);
+    Route::get('userClients',[ClientsController::class, 'getAuthenticatedUser']);
+    Route::get('/clientsList', [ClientsController::class, 'index']);
 
 });
 

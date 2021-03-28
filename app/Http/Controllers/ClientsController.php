@@ -34,11 +34,13 @@ class ClientsController extends Controller
     public function index(Request $request)
     {
         try {
-            $clients =Clients::all()->where('available', true);
+            $clients =Clients::all();
         } catch (Exception $e) {
             return response()->json(['response_body' => $e->getMessage()], 500);
         }
         return response()->json($clients);
+        
+      
     }
 
     /**
@@ -104,11 +106,14 @@ class ClientsController extends Controller
         $clients=Clients::find($id);
        
 
-       if ( $clients == null) {
+       if ( $clients === null) {
            return response()->json(['response_body' => 'Cliente inexistente'], 404);
        } else {
-        $clients->update(['name' => $request->name, 'surname' => $request->surname, 'email' => $request->email,
-        'phone' => $request->phone]);
+        $clients->update([
+             'name' => $request->name, 
+             'surname' => $request->surname, 
+             'email' => $request->email,
+             'phone' => $request->phone]);
 
         $clients->save();
         return $this->show($id);
@@ -121,16 +126,12 @@ class ClientsController extends Controller
      * @param  \App\Models\Clients  $clients
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
-        $clients = Clients::find($id);
-        if($clients === null){
-            return response()->json(['response_body'=>'Cliente no encontrado'],404);
-        }else{
-            $clients->available = false;
-            $clients->save();
-            return response()->json(['response_body' => $clients], 200);
-        }
+        $clients = Clients::find($id)->delete();
+        
+        return response()->json( $clients);
+        
 
     }
    
