@@ -36,7 +36,6 @@ Route::post('loginEmployee', [EmployeesController::class, 'authenticate']);
 Route::group(['middleware' => ['jwt.verify']], function() {
 
     Route::get('employee',[EmployeesController::class, 'getAuthenticatedUser']);
-    Route::get('clients',[ClientsController::class, 'getAuthenticatedClients']);
     Route::get('/employees', [EmployeesController::class, 'index']);
     Route::get('userClients',[ClientsController::class, 'getAuthenticatedUser']);
     Route::get('/clientsList', [ClientsController::class, 'index']);
@@ -56,17 +55,10 @@ Route::get('specialities', [SpecialitiesController::class, 'index']);
 Route::post('registerClients', [ClientsController::class, 'clientsregister']);
 Route::post('loginClients', [ClientsController::class, 'authenticate']);
 
-Route::group(['middleware' => ['jwt.verify']], function() {
-
-    Route::get('userClients',[ClientsController::class, 'getAuthenticatedUser']);
-
-});
-
 Route::post('logoutClients', [ClientsController::class, 'logout']);
-Route::get('/clientsList', [ClientsController::class, 'index']);
-    Route::get('/clients/{id}', [ClientsController::class, 'show']);
-    Route::put('/clients/update/{id}', [ClientsController::class, 'update']);
-    Route::delete('/clients/delete/{id}', [ClientsController::class, 'destroy']);
+Route::get('/clients/{id}', [ClientsController::class, 'show']);
+Route::put('/clients/update/{id}', [ClientsController::class, 'update']);
+Route::delete('/clients/delete/{id}', [ClientsController::class, 'destroy']);
 
 
 //Vaccines
