@@ -8,6 +8,7 @@ use App\Http\Controllers\PetsController;
 use App\Http\Controllers\SpecialitiesController;
 use App\Http\Controllers\VaccinationsController;
 use App\Http\Controllers\ConsultationsController;
+use App\Http\Controllers\DatesController;
 use App\Models\Specialities;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -96,6 +97,9 @@ Route::put('/vaccinations/{vaccination_id}', [VaccinationsController::class, 'up
 //Consultation
 Route::get('/pets/{petId}/consultations', [ConsultationsController::class, 'index']);
 Route::post('/pets/{petId}/consultations', [ConsultationsController::class, 'store']);
+
+//Dates
+Route::get('/dates', [DatesController::class, 'index']);
 
 
 

@@ -14,7 +14,12 @@ class DatesController extends Controller
      */
     public function index()
     {
-        //
+        $dates = Dates::all();
+        if ($dates->isEmpty()) {
+            return response()->json(null, 404);
+        } else {
+            return response()->json($dates);
+        }
     }
 
     /**
