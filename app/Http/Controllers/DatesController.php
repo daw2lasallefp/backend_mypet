@@ -79,7 +79,7 @@ class DatesController extends Controller
 
     public function showByPetId($petId)
     {
-        $date = Dates::where('id', $petId)->get();
+        $date = Dates::where('pet_id', $petId)->get();
         if ($date->isEmpty()) {
             return response()->json(['message' => 'No se ha encontrado ninguna cita para esa mascota'], 404);
         } else {
@@ -89,7 +89,7 @@ class DatesController extends Controller
 
     public function showByEmployeeId($employeeId)
     {
-        $date = Dates::where('id', $employeeId)->get();
+        $date = Dates::where('employee_id', $employeeId)->get();
         if ($date->isEmpty()) {
             return response()->json(['message' => 'El empleado seleccionado no tiene ninguna cita programada'], 404);
         } else {
