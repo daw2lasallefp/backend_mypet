@@ -14,6 +14,7 @@ use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use Illuminate\Support\Facades\Config;
 
 
+
 use Exception;
 
 class ClientsController extends Controller
@@ -34,13 +35,11 @@ class ClientsController extends Controller
     public function index(Request $request)
     {
         try {
-            $clients =Clients::all();
+            $clients = Clients::all();
         } catch (Exception $e) {
             return response()->json(['response_body' => $e->getMessage()], 500);
         }
         return response()->json($clients);
-        
-      
     }
 
     /**
@@ -72,13 +71,10 @@ class ClientsController extends Controller
      */
     public function show($id)
     {
-        
-            $clients = Clients::show($id)
-            ->withTrashed()
-           ->first();
-        
-            return response()->json($clients, 200);
-        
+
+        $clients = Clients::find($id);
+           
+        return response()->json($clients, 200);
     }
 
     /**
@@ -89,7 +85,6 @@ class ClientsController extends Controller
      */
     public function edit($id)
     {
-      
     }
 
     /**
@@ -99,25 +94,24 @@ class ClientsController extends Controller
      * @param  \App\Models\Clients  $clients
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
-      
-     
-        $clients=Clients::find($id);
-       
+        $clients = Clients::find($id);
+        if ($clients === null) {
+            return response()->json(['response_body' => 'El empleado no se encuentra en la base de datos'], 404);
+        } else {
+        
 
-       if ( $clients === null) {
-           return response()->json(['response_body' => 'Cliente inexistente'], 404);
-       } else {
-        $clients->update([
-             'name' => $request->name, 
-             'surname' => $request->surname, 
-             'email' => $request->email,
-             'phone' => $request->phone]);
+         $clients->update([
+                'name' => $request->name,
+                'surname' => $request->surname,
+                'email' => $request->email,
+                'phone' => $request->phone
+        ]);
 
-        $clients->save();
-        return $this->show($id);
-       }
+            $clients->save();
+            return response()->json($clients, 200);
+         }
     }
 
     /**
@@ -126,43 +120,40 @@ class ClientsController extends Controller
      * @param  \App\Models\Clients  $clients
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request,$id)
+    public function destroy(Request $request, $id)
     {
-        $clients = Clients::find($id)->delete();
-        
-        return response()->json( $clients);
-        
+        $clients = Clients::find($id);
+        $clients->delete();
 
+        return response()->json($clients);
     }
-   
+
 
     public function clientsregister(Request $request)
     {
 
 
-            //Validar datos
-            $validate = Validator::make($request->all(), [
-                'name' => 'required|alpha',
-                'surname' => 'required|alpha',
-                'email' => 'required|email|unique:clients',
-                'password' => 'required',
-                'phone' => 'required|numeric'
-            ]);
-            //Comprobar si el usuario existe, duplicado
-            if ($validate->fails()) {
-                return response()->json($validate->errors()->toJson(), 400);
-            } 
-               
+        //Validar datos
+        $validate = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'surname' => 'required|string',
+            'email' => 'required|email|unique:clients',
+            'password' => 'required|string',
+            'phone' => 'required|numeric'
+        ]);
+        //Comprobar si el usuario existe, duplicado
+        if ($validate->fails()) {
+            return response()->json($validate->errors()->toJson(), 400);
+        }
 
-              
-                //Crear cliente
-                $clients = Clients::create([
-                    'name' => $request->get('name'),
-                    'surname' => $request->get('surname'),
-                    'email' => $request->get('email'),
-                    'password' => Hash::make($request->get('password')),
-                    'phone' => $request->get('phone')
-                 ]);
+        //Crear cliente
+        $clients = Clients::create([
+            'name' => $request->get('name'),
+            'surname' => $request->get('surname'),
+            'email' => $request->get('email'),
+            'password' => Hash::make($request->get('password')),
+            'phone' => $request->get('phone')
+        ]);
 
         $token = JWTAuth::fromUser($clients);
 
@@ -172,8 +163,8 @@ class ClientsController extends Controller
 
     public function authenticate(Request $request)
     {
-          //credenciales a comparar
-         
+        //credenciales a comparar
+
         $credential = $request->only('email', 'password');
         try {
             if (!$token = JWTAuth::attempt($credential)) {
@@ -183,15 +174,8 @@ class ClientsController extends Controller
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
         return response()->json(compact('token'));
-        
-       
-        
     }
 
-   
-
-
-  
     public function getAuthenticatedUser()
     {
         try {
@@ -209,14 +193,10 @@ class ClientsController extends Controller
     }
 
 
-    public function logout() {
+    public function logout()
+    {
         auth()->logout();
 
         return response()->json(['message' => 'Sesión cliente cerrada']);
     }
-
-    
-
-    
-
 }
