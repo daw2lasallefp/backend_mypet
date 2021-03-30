@@ -67,9 +67,34 @@ class DatesController extends Controller
      * @param  \App\Models\Dates  $dates
      * @return \Illuminate\Http\Response
      */
-    public function show(Dates $dates)
+    public function show($id)
     {
-        //
+        $date = Dates::where('id', $id)->get();
+        if ($date->isEmpty()) {
+            return response()->json(['message' => 'No se ha encontrado ninguna cita con ese ID'], 404);
+        } else {
+            return response()->json($date);
+        }
+    }
+
+    public function showByPetId($petId)
+    {
+        $date = Dates::where('id', $petId)->get();
+        if ($date->isEmpty()) {
+            return response()->json(['message' => 'No se ha encontrado ninguna cita para esa mascota'], 404);
+        } else {
+            return response()->json($date);
+        }
+    }
+
+    public function showByEmployeeId($employeeId)
+    {
+        $date = Dates::where('id', $employeeId)->get();
+        if ($date->isEmpty()) {
+            return response()->json(['message' => 'El empleado seleccionado no tiene ninguna cita programada'], 404);
+        } else {
+            return response()->json($date);
+        }
     }
 
     /**
