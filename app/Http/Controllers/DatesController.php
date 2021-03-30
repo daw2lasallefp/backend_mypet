@@ -57,7 +57,7 @@ class DatesController extends Controller
                 return response()->json(['message' => $e->getMessage()], 500);
             }
         } else {
-            return response()->json(['message' => 'A date with the same date and pet is already scheduled!'], 400);
+            return response()->json(['message' => 'Ya hay una cita programada en la fecha seleccionada para esa mascota'], 400);
         }
     }
 
@@ -101,8 +101,14 @@ class DatesController extends Controller
      * @param  \App\Models\Dates  $dates
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Dates $dates)
+    public function destroy($id)
     {
-        //
+        $date = Dates::find($id);
+        if ($date == null) {
+            return response()->json(['message' => 'No se ha encontrado ninguna cita con ese ID'], 404);
+        } else {
+            $date->delete();
+            return response()->json($date);
+        }
     }
 }

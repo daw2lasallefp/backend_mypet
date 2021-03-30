@@ -18,7 +18,7 @@ class VaccinationsController extends Controller
     {
         $vaccination = Vaccinations::all();
         if ($vaccination->isEmpty()) {
-            return response()->json(null, 404);
+            return response()->json(['message' => 'No se ha encontrado ninguna vacunación con ese ID'], 404);
         } else {
             return response()->json($vaccination);
         }
@@ -58,7 +58,7 @@ class VaccinationsController extends Controller
                 return response()->json(['message' => $e->getMessage()], 500);
             }
         } else {
-            return response()->json(['message' => 'A vaccination with the same date is already planned for that pet'], 400);
+            return response()->json(['message' => 'Ya hay una vacunación programada en la fecha seleccionada para esa mascota y vacuna'], 400);
         }
     }
 
@@ -72,7 +72,7 @@ class VaccinationsController extends Controller
     {
         $vaccination = Vaccinations::where('pet_id', $pet_id)->get();
         if ($vaccination->isEmpty()) {
-            return response()->json(null, 404);
+            return response()->json(['message' => 'No se ha encontrado ninguna vacunación para la mascota seleccionada'], 404);
         } else {
             return response()->json($vaccination);
         }
@@ -82,7 +82,7 @@ class VaccinationsController extends Controller
     {
         $vaccination = Vaccinations::where('id', $id)->get();
         if ($vaccination->isEmpty()) {
-            return response()->json(null, 404);
+            return response()->json(['message' => 'No se ha encontrado ninguna vacunación con ese ID'], 404);
         } else {
             return response()->json($vaccination);
         }
@@ -111,7 +111,7 @@ class VaccinationsController extends Controller
         try {
             $update = Vaccinations::findOrFail($id);
         } catch (Exception $e) {
-            return response()->json(['message' => 'No vaccination associated with that ID'], 404);
+            return response()->json(['message' => 'No se ha encontrado ninguna vacunación con ese ID'], 404);
         }
 
         $validator = Validator::make($request->all(), [
