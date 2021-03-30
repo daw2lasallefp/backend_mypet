@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Employees;
 use App\Models\Specialities;
 use Illuminate\Http\Request;
-
+use Exception;
 use Illuminate\Support\Facades\Config;
 
 class SpecialitiesController extends Controller
