@@ -94,6 +94,6 @@ Route::post('/pets/{petId}/consultations', [ConsultationsController::class, 'sto
 Route::get('/dates', [DatesController::class, 'index']);
 Route::get('/dates/{id}', [DatesController::class, 'show']);
 Route::get('/dates/pets/{petId}', [DatesController::class, 'showByPetId']);
-Route::get('/dates/employee/{employeeId}', [DatesController::class, 'showByEmployeeId']);
+Route::get('/dates/employees/{employeeId}', [DatesController::class, 'showByEmployeeId']);
 Route::post('/dates', [DatesController::class, 'store']);
 Route::delete('/dates/{id}', [DatesController::class, 'destroy']);
