@@ -66,7 +66,7 @@ class EmployeesController extends Controller
             'password' => 'required|string',
             'admin' => 'required|bool',
             'workShifts' => 'required|string|max:255',
-            'specialities' => 'required|string',
+            'specialities' => 'required|numeric',
         ]);
         $validatorsErrors = array();
 
