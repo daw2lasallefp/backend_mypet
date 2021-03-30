@@ -93,6 +93,4 @@ Route::post('/pets/{petId}/consultations', [ConsultationsController::class, 'sto
 //Dates
 Route::get('/dates', [DatesController::class, 'index']);
 Route::post('/dates', [DatesController::class, 'store']);
-
-
-
+Route::delete('/dates/{id}', [DatesController::class, 'destroy']);

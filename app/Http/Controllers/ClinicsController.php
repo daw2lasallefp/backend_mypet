@@ -56,7 +56,7 @@ class ClinicsController extends Controller
     {
         $clinic = Clinics::where('id', $id)->get();
         if ($clinic->isEmpty()) {
-            return response()->json(null, 404);
+            return response()->json(['message' => 'No se ha encontrado ninguna clínica con ese ID'], 404);
         } else {
             return response()->json($clinic);
         }
@@ -85,7 +85,7 @@ class ClinicsController extends Controller
         try {
             $itemToUpdate = Clinics::findOrFail($id);
         } catch (Exception $e) {
-            return response()->json(['message' => 'There is no such clinic'], 404);
+            return response()->json(['message' => 'No se ha encontrado ninguna clínica con ese ID'], 404);
         }
 
         $validator = Validator::make($request->all(), [
