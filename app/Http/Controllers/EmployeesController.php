@@ -68,11 +68,13 @@ class EmployeesController extends Controller
             'workShifts' => 'required|string|max:255',
             'specialities' => 'required|numeric',
         ]);
-        $validatorsErrors = array();
 
-        $validatorsErrors = array_merge($validatorFields->errors()->all(), $validatorEmail->errors()->all());
+        if($validatorEmail->fails()){
+            return response()->json(["message" => $validatorEmail], 409);
+        }
+
         if ($validatorFields->fails()) {
-            return response()->json(["message" => $validatorsErrors], 400);
+            return response()->json(["message" => $validatorFields], 400);
         }
 
         $employee = Employees::create([
