@@ -125,7 +125,7 @@ class ClientsController extends Controller
         $clients = Clients::find($id);
         $clients->delete();
 
-        return response()->json($clients);
+        return response()->json($clients, 200);
     }
 
 
