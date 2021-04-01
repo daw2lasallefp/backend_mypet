@@ -50,7 +50,7 @@ class EmployeesController extends Controller
         } catch (JWTException $e) {
             return response()->json(['token_absent'], $e->getStatusCode());
         }
-        return response()->json(compact('user'));
+        return response()->json($user);
     }
 
 
@@ -68,11 +68,13 @@ class EmployeesController extends Controller
             'workShifts' => 'required|string|max:255',
             'specialities' => 'required|numeric',
         ]);
-        $validatorsErrors = array();
 
-        $validatorsErrors = array_merge($validatorFields->errors()->all(), $validatorEmail->errors()->all());
+        if($validatorEmail->fails()){
+            return response()->json(["message" => $validatorEmail], 409);
+        }
+
         if ($validatorFields->fails()) {
-            return response()->json(["message" => $validatorsErrors], 400);
+            return response()->json(["message" => $validatorFields], 400);
         }
 
         $employee = Employees::create([
@@ -87,7 +89,7 @@ class EmployeesController extends Controller
 
         $token = JWTAuth::fromUser($employee);
 
-        return response()->json(compact('employee', 'token'), 201);
+        return response()->json($employee, 201);
     }
 
 
@@ -139,7 +141,8 @@ class EmployeesController extends Controller
             return response()->json(['response_body' => 'El empleado no se encuentra en la base de datos'], 404);
         } else {
             $employee->available = false;
-            return response()->json(['response_body' => $employee], 200);
+            $employee->save();
+            return response()->json($employee, 200);
         }
     }
 

@@ -36,7 +36,7 @@ Route::post('loginEmployee', [EmployeesController::class, 'authenticate']);
 Route::group(['middleware' => ['jwt.verify']], function() {
 
     Route::get('employee',[EmployeesController::class, 'getAuthenticatedUser']);
-    Route::get('/employees', [EmployeesController::class, 'index']);
+    Route::get('employees', [EmployeesController::class, 'index']);
     Route::get('userClients',[ClientsController::class, 'getAuthenticatedUser']);
     
 
