@@ -56,9 +56,9 @@ Route::post('registerClients', [ClientsController::class, 'clientsregister']);
 Route::post('loginClients', [ClientsController::class, 'authenticate']);
 Route::post('logoutClients', [ClientsController::class, 'logout']);
 Route::get('/clientsList', [ClientsController::class, 'index']);
-    Route::get('/clients/{id}', [ClientsController::class, 'show']);
-    Route::put('/clients/update/{id}', [ClientsController::class, 'update']);
-    Route::delete('/clients/delete/{id}', [ClientsController::class, 'destroy']);
+Route::get('/clients/{id}', [ClientsController::class, 'show']);
+Route::put('/clients/update/{id}', [ClientsController::class, 'update']);
+Route::delete('/clients/delete/{id}', [ClientsController::class, 'destroy']);
 
 
 //Vaccines
