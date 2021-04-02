@@ -96,11 +96,17 @@ class EmployeesController extends Controller
     public function index(Request $request)
     {
         try {
-            $employees = Employees::all()->where('available', true);
+            if($request->has('page')){
+                $employees = Employees::where('available', true)->paginate(5);
+            }else{
+                $employees = Employees::all()->where('available', true); 
+            }
+           
         } catch (Exception $e) {
             return response()->json(['response_body' => $e->getMessage()], 500);
         }
         return response()->json($employees);
+		
     }
 
     public function show($id)
