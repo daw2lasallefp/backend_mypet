@@ -15,14 +15,19 @@ class ClinicsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $clinic = Clinics::all();
-        if ($clinic->isEmpty()) {
-            return response()->json(null, 404);
-        } else {
-            return response()->json($clinic);
+        try {
+            if($request->has('page')){
+                $clinics = Clinics::all()->paginate(5);
+            }else{
+                $clinics = Clinics::all(); 
+            }
+           
+        } catch (Exception $e) {
+            return response()->json(['response_body' => $e->getMessage()], 500);
         }
+        return response()->json($clinics);
     }
 
     /**
