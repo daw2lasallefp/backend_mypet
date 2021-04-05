@@ -14,14 +14,19 @@ class VaccinationsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $vaccination = Vaccinations::all();
-        if ($vaccination->isEmpty()) {
-            return response()->json(['message' => 'No se ha encontrado ninguna vacunación con ese ID'], 404);
-        } else {
-            return response()->json($vaccination);
+        try {
+            if($request->has('page')){
+                $vaccination = Vaccinations::all()->paginate(5);
+            }else{
+                $vaccination = Vaccinations::all(); 
+            }
+           
+        } catch (Exception $e) {
+            return response()->json(['response_body' => $e->getMessage()], 500);
         }
+        return response()->json($vaccination);
     }
 
     /**

@@ -14,14 +14,19 @@ class DatesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $dates = Dates::all();
-        if ($dates->isEmpty()) {
-            return response()->json(null, 404);
-        } else {
-            return response()->json($dates);
+        try {
+            if($request->has('page')){
+                $dates = Dates::all()->paginate(5);
+            }else{
+                $dates = Dates::all(); 
+            }
+           
+        } catch (Exception $e) {
+            return response()->json(['response_body' => $e->getMessage()], 500);
         }
+        return response()->json($dates);
     }
 
     /**
