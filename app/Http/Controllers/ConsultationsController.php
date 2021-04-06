@@ -20,11 +20,10 @@ class ConsultationsController extends Controller
             ->join('employees AS e', 'c.employee_id', '=', 'e.id')
             ->join('specialities AS s', 'e.speciality_id', '=', 's.id')
             ->where('c.pet_id', $petId)
-            ->get(['s.name AS speciality', 'e.name AS employee_name', 'e.surname AS employee_surname',
+            ->get(['c.id AS id','s.name AS speciality', 'e.name AS employee_name', 'e.surname AS employee_surname',
                 'c.comments AS comments', 'c.date_time AS date_time']);
 
             return Response()->json($consultations);
-        //return Consultations::all()->where('pet_id', $petId);
     }
 
     /**
