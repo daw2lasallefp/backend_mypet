@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Vaccinations;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Exception;
 
@@ -20,9 +21,9 @@ class VaccinationsController extends Controller
             if($request->has('page')){
                 $vaccination = Vaccinations::all()->paginate(5);
             }else{
-                $vaccination = Vaccinations::all(); 
+                $vaccination = Vaccinations::all();
             }
-           
+
         } catch (Exception $e) {
             return response()->json(['response_body' => $e->getMessage()], 500);
         }
@@ -71,16 +72,18 @@ class VaccinationsController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Vaccinations  $vaccinations
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function showByPet($pet_id)
     {
-        $vaccination = Vaccinations::where('pet_id', $pet_id)->get();
-        if ($vaccination->isEmpty()) {
-            return response()->json(['message' => 'No se ha encontrado ninguna vacunación para la mascota seleccionada'], 404);
-        } else {
-            return response()->json($vaccination);
-        }
+        $vaccinations = DB::table('vaccinations AS v')
+            ->join('vaccines AS vac', 'v.vaccine_id', '=', 'vac.id')
+
+            ->where('v.pet_id', $pet_id)
+            ->get(['v.id AS id','v.date AS date', 'v.done AS done', 'v.pet_id AS pet_id',
+                'v.vaccine_id AS vaccine_id', 'vac.name AS vaccine_name']);
+
+        return Response()->json($vaccinations);
     }
 
     public function showById($id)
