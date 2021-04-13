@@ -40,8 +40,7 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::get('employee', [EmployeesController::class, 'getAuthenticatedUser']);
     Route::get('employees', [EmployeesController::class, 'index']);
     Route::get('userClients', [ClientsController::class, 'getAuthenticatedUser']);
-    Route::post('resetPass', [ResetPwdReqController::class, 'reqForgotPassword']);
-    Route::post('updatePass', [UpdatePwdController::class, 'updatePassword']);
+ 
 
     //Update clinic
     Route::put('/clinics/{id}', [ClinicsController::class, 'update']);
@@ -61,6 +60,9 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::post('/vaccinations', [VaccinationsController::class, 'store']);
     Route::put('/vaccinations/{vaccination_id}', [VaccinationsController::class, 'update']);
 });
+
+Route::post('resetPass', [ResetPwdReqController::class, 'reqForgotPassword']);
+Route::post('updatePass', [UpdatePwdController::class, 'updatePassword']);
 
 //Show clinic info
 
