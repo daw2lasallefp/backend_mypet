@@ -40,12 +40,20 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::get('employee', [EmployeesController::class, 'getAuthenticatedUser']);
     Route::get('employees', [EmployeesController::class, 'index']);
     Route::get('userClients', [ClientsController::class, 'getAuthenticatedUser']);
-<<<<<<< HEAD
+
+
     Route::post('resetPass', [ResetPwdReqController::class, 'reqForgotPassword']);
     Route::post('updatePass', [UpdatePwdController::class, 'updatePassword']);
-=======
+
  
->>>>>>> 1f84685d403adf91b86214d35fee41869c7119f0
+
+
+    Route::post('resetPass', [ResetPwdReqController::class, 'reqForgotPassword']);
+    Route::post('updatePass', [UpdatePwdController::class, 'updatePassword']);
+
+ 
+
+
 
     //Update clinic
     Route::put('/clinics/{id}', [ClinicsController::class, 'update']);
