@@ -9,6 +9,7 @@ use App\Http\Controllers\SpecialitiesController;
 use App\Http\Controllers\VaccinationsController;
 use App\Http\Controllers\ConsultationsController;
 use App\Http\Controllers\DatesController;
+use App\Http\Controllers\ResetPwdReqController;
 use App\Models\Specialities;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -38,6 +39,8 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::get('employee', [EmployeesController::class, 'getAuthenticatedUser']);
     Route::get('employees', [EmployeesController::class, 'index']);
     Route::get('userClients', [ClientsController::class, 'getAuthenticatedUser']);
+    Route::post('resetPass', [ResetPwdReqController::class, 'reqForgotPassword']);
+    Route::post('updatePass', [UpdatePwdReqController::class, 'updatePassword']);
 
     //Update clinic
     Route::put('/clinics/{id}', [ClinicsController::class, 'update']);
