@@ -10,6 +10,7 @@ use App\Http\Controllers\VaccinationsController;
 use App\Http\Controllers\ConsultationsController;
 use App\Http\Controllers\DatesController;
 use App\Http\Controllers\ResetPwdReqController;
+use App\Http\Controllers\UpdatePwdController;
 use App\Models\Specialities;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -42,6 +43,9 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::post('resetPass', [ResetPwdReqController::class, 'reqForgotPassword']);
     Route::post('updatePass', [UpdatePwdController::class, 'updatePassword']);
 
+ 
+
+
     //Update clinic
     Route::put('/clinics/{id}', [ClinicsController::class, 'update']);
 
@@ -60,6 +64,9 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::post('/vaccinations', [VaccinationsController::class, 'store']);
     Route::put('/vaccinations/{vaccination_id}', [VaccinationsController::class, 'update']);
 });
+
+Route::post('resetPass', [ResetPwdReqController::class, 'reqForgotPassword']);
+Route::post('updatePass', [UpdatePwdController::class, 'updatePassword']);
 
 //Show clinic info
 

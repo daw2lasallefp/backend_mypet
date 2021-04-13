@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Clients;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\RequestHelper;
+use App\Models\Employees;
 use Symfony\Component\HttpFoundation\Response;
 
 class UpdatePwdController extends Controller
@@ -28,7 +29,11 @@ class UpdatePwdController extends Controller
     }
 
     private function changePassword($request) {
-        $user = Clients::whereEmail($request->email)->first();
+      $user = Clients::whereEmail($request->email)->first();
+      if(!$user){
+        $user = Employees::whereEmail($request->email)->first();
+      }
+       
         $user->update([
           'password'=>bcrypt($request->password)
         ]);

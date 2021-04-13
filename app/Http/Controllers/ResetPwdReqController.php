@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Clients;
+use App\Models\Employees;
 use App\Mail\SendMail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Symfony\Component\HttpFoundation\Response;
+use Exception;
 
 class ResetPwdReqController extends Controller
 {
@@ -33,7 +35,14 @@ class ResetPwdReqController extends Controller
     }
 
     public function validEmail($email) {
-       return !!Clients::where('email', $email)->first();
+   
+         $user = Employees::where('email', $email)->first(); 
+         
+         if(!$user){
+            $user = Clients::where('email', $email)->first(); 
+         }
+        return $user;
+        
     }
 
     public function createToken($email){
