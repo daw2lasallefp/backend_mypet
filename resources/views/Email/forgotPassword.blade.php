@@ -1,7 +1,7 @@
 @component('mail::message')
 # Change Password
 
-@component('mail::button', ['url' => 'http://localhost:4200/update-password?token='.$token])
+@component('mail::button', ['url' => 'http://localhost:4200/updatePass?token='.$token])
 Reset Password
 @endcomponent
 
