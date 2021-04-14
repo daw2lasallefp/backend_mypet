@@ -24,7 +24,7 @@ class UpdatePwdController extends Controller
 
     private function noToken() {
         return response()->json([
-          'error' => 'Email or token does not exist.'
+          'error' => 'El email o token no existe.'
         ],Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
@@ -39,7 +39,7 @@ class UpdatePwdController extends Controller
         ]);
         $this->validateToken($request)->delete();
         return response()->json([
-          'data' => 'Password changed successfully.'
+          'data' => 'Contraseña actualizada correctamente.'
         ],Response::HTTP_CREATED);
     }  
 }
