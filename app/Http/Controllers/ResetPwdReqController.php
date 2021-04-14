@@ -18,12 +18,12 @@ class ResetPwdReqController extends Controller
     public function reqForgotPassword(Request $request){
         if(!$this->validEmail($request->email)) {
             return response()->json([
-                'message' => 'Email not found.'
+                'message' => 'El correo electrónico no se encuentra en la base de datos.'
             ], Response::HTTP_NOT_FOUND);
         } else {
             $this->sendEmail($request->email);
             return response()->json([
-                'message' => 'Password reset mail has been sent.'
+                'message' => 'Correo electrónico de recuperación de contraseña enviado.'
             ], Response::HTTP_OK);            
         }
     }

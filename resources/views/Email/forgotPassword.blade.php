@@ -1,10 +1,10 @@
 @component('mail::message')
-# Change Password
+# Cambiar contraseña
 
 @component('mail::button', ['url' => 'http://localhost:4200/updatePass?token='.$token])
-Reset Password
+Recuperar contraseña
 @endcomponent
 
-Thanks,<br>
-{{ config('app.name') }}
+Gracias,<br>
+MyPet
 @endcomponent

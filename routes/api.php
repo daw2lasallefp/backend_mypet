@@ -40,11 +40,9 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::get('employee', [EmployeesController::class, 'getAuthenticatedUser']);
     Route::get('employees', [EmployeesController::class, 'index']);
     Route::get('userClients', [ClientsController::class, 'getAuthenticatedUser']);
-    Route::post('resetPass', [ResetPwdReqController::class, 'reqForgotPassword']);
-    Route::post('updatePass', [UpdatePwdController::class, 'updatePassword']);
-
- 
-
+    Route::get('/employees/{id}', [EmployeesController::class, 'show']);
+    Route::delete('/employees/{id}', [EmployeesController::class, 'delete']);
+    Route::put('/employees/{id}', [EmployeesController::class, 'update']);
 
     //Update clinic
     Route::put('/clinics/{id}', [ClinicsController::class, 'update']);
@@ -72,10 +70,6 @@ Route::post('updatePass', [UpdatePwdController::class, 'updatePassword']);
 
 Route::get('/clinics', [ClinicsController::class, 'index']);
 Route::get('/clinics/{id}', [ClinicsController::class, 'show']);
-
-Route::get('/employees/{id}', [EmployeesController::class, 'show']);
-Route::delete('/employees/{id}', [EmployeesController::class, 'delete']);
-Route::put('/employees/{id}', [EmployeesController::class, 'update']);
 
 //specialitiesRoute
 Route::get('specialities', [SpecialitiesController::class, 'index']);
