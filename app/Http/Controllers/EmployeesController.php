@@ -27,6 +27,12 @@ class EmployeesController extends Controller
     public function authenticate(Request $request)
     {
         $credentials = $request->only('email', 'password');
+        $employee = Employees::where('email', $request->email)->first();
+
+        if ($employee->available === 0){
+            return response()->json(['error' => 'Lo siento, este empleado ha sido dado de baja.'], 404);
+        }
+
         try {
             if (!$token = JWTAuth::attempt($credentials)) {
                 return response()->json(['error' => 'Email y/o contraseña incorrectos'], 400);
