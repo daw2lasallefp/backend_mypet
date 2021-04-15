@@ -166,6 +166,12 @@ class ClientsController extends Controller
         //credenciales a comparar
 
         $credential = $request->only('email', 'password');
+        $clients = Clients::where('email', $request->email)->first();
+
+        if ($clients->available === 0){
+            return response()->json(['error' => 'Lo sentimos, este cliente ha sido dado de baja.'], 404);
+        }
+
         try {
             if (!$token = JWTAuth::attempt($credential)) {
                 return response()->json(['error' => 'incorrect_credentials'], 400);
