@@ -81,8 +81,6 @@ Route::get('/clients/{id}', [ClientsController::class, 'show']);
 Route::put('/clients/update/{id}', [ClientsController::class, 'update']);
 Route::delete('/clients/delete/{id}', [ClientsController::class, 'destroy']);
 
-
-
 //Vaccines
 Route::get('/vaccines', [VaccinesController::class, 'index']);
 Route::get('/vaccines/{id}', [VaccinesController::class, 'show']);

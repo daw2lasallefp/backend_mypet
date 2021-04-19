@@ -96,7 +96,8 @@ class PetsController extends Controller
             return response()->json(null, 404);
         } else {
             $pet->update(['name' => $request->name, 'sex' => $request->sex, 'weight' => $request->weight,
-                'age' => $request->age, 'species' => $request->species, 'breed' => $request->breed]);
+                'age' => $request->age, 'species' => $request->species, 'breed' => $request->breed,
+                'available' => filter_var($request->available, FILTER_VALIDATE_BOOLEAN)]);
             $pet->save();
             return response()->json($pet);
         }
