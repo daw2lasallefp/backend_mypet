@@ -98,7 +98,7 @@ class ClientsController extends Controller
     {
         $clients = Clients::find($id);
         if ($clients === null) {
-            return response()->json(['response_body' => 'El empleado no se encuentra en la base de datos'], 404);
+            return response()->json(['response_body' => 'El cliente no se encuentra en la base de datos'], 404);
         } else {
         
 
