@@ -40,6 +40,7 @@ class ClientsController extends Controller
             return response()->json(['response_body' => $e->getMessage()], 500);
         }
         return response()->json($clients);
+        
     }
 
     /**
