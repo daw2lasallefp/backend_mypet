@@ -35,7 +35,9 @@ class ClientsController extends Controller
     public function index(Request $request)
     {
         try {
-            $clients = Clients::all();
+            
+                $clients = Clients::all(); 
+            
         } catch (Exception $e) {
             return response()->json(['response_body' => $e->getMessage()], 500);
         }
