@@ -12,6 +12,8 @@ use App\Models\Pets;
 use App\Models\Specialities;
 use App\Models\Vaccinations;
 use App\Models\Vaccines;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -31,5 +33,16 @@ class DatabaseSeeder extends Seeder
         Consultations::factory(10)->create();
         Vaccines::factory(2)->create();
         Vaccinations::factory(10)->create();
+
+        Employees::create(array(
+            'name' => 'Admin',
+            'surname' => 'Default',
+            'email' => 'default@admin.com',
+            'password' => Hash::make('Default_Admin1234'),
+            'work_shift' => 'tarde',
+            'admin' => 1,
+            'speciality_id' => DB::table('specialities')->pluck('id')->first(),
+            'available' => 1
+        ));
     }
 }
