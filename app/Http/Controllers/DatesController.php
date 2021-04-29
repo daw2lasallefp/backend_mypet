@@ -19,7 +19,7 @@ class DatesController extends Controller
     {
         try {
             if($request->has('page')){
-                $dates = Dates::all()->paginate(5);
+                $dates = Dates::paginate(5);
             }else{
                 $dates = Dates::all(); 
             }
@@ -93,9 +93,15 @@ class DatesController extends Controller
         }
     }
 
-    public function showByEmployeeId($employeeId)
+    public function showByEmployeeId(Request $request, $employeeId)
     {
-        $date = Dates::where('employee_id', $employeeId)->get();
+        if($request->has('page')){
+            $date = Dates::where('employee_id', $employeeId)->paginate(5);
+        }else{
+            $date = Dates::where('employee_id', $employeeId)->get();
+        }
+
+    
         if ($date->isEmpty()) {
             return response()->json(['message' => 'El empleado seleccionado no tiene ninguna cita programada'], 404);
         } else {
@@ -103,12 +109,20 @@ class DatesController extends Controller
         }
     }
 
-    public function showByClientId($clientId)
+    public function showByClientId(Request $request, $clientId)
     {
-        $consultations = DB::table('dates')
+
+        if($request->has('page')){
+            $consultations = Dates::where('pets.client_id', $clientId)
+            ->join('pets', 'dates.pet_id', '=', 'pets.id')
+            ->paginate(5);      
+          }else{
+            $consultations = DB::table('dates')
             ->join('pets', 'dates.pet_id', '=', 'pets.id')
             ->where('pets.client_id', $clientId)
             ->get();
+        }
+  
 
         return Response()->json($consultations);
     }
