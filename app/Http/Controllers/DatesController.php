@@ -6,6 +6,7 @@ use App\Models\Dates;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Exception;
+use Illuminate\Support\Facades\DB;
 
 class DatesController extends Controller
 {
@@ -100,6 +101,16 @@ class DatesController extends Controller
         } else {
             return response()->json($date);
         }
+    }
+
+    public function showByClientId($clientId)
+    {
+        $consultations = DB::table('dates')
+            ->join('pets', 'dates.pet_id', '=', 'pets.id')
+            ->where('pets.client_id', $clientId)
+            ->get();
+
+        return Response()->json($consultations);
     }
 
     /**
