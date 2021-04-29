@@ -18,12 +18,11 @@ class VaccinationsController extends Controller
     public function index(Request $request)
     {
         try {
-            if($request->has('page')){
+            if ($request->has('page')) {
                 $vaccination = Vaccinations::all()->paginate(5);
-            }else{
+            } else {
                 $vaccination = Vaccinations::all();
             }
-
         } catch (Exception $e) {
             return response()->json(['response_body' => $e->getMessage()], 500);
         }
@@ -74,14 +73,25 @@ class VaccinationsController extends Controller
      * @param  \App\Models\Vaccinations  $vaccinations
      * @return \Illuminate\Http\JsonResponse
      */
-    public function showByPet($pet_id)
+    public function showByPet(Request $request, $pet_id)
     {
-        $vaccinations = DB::table('vaccinations AS v')
-            ->join('vaccines AS vac', 'v.vaccine_id', '=', 'vac.id')
+        if ($request->has('page')) {
+            $vaccinations = Vaccinations::where('vaccinations.pet_id', $pet_id)
+                ->join('vaccines AS vac', 'vaccinations.vaccine_id', '=', 'vac.id')
+                ->paginate(5, [
+                    'vaccinations.id AS id', 'vaccinations.date AS date', 'vaccinations.done AS done', 'vaccinations.pet_id AS pet_id',
+                    'vaccinations.vaccine_id AS vaccine_id', 'vac.name AS vaccine_name'
+                ]);
+        } else {
+            $vaccinations = DB::table('vaccinations AS v')
+                ->join('vaccines AS vac', 'v.vaccine_id', '=', 'vac.id')
+                ->where('v.pet_id', $pet_id)
+                ->get([
+                    'v.id AS id', 'v.date AS date', 'v.done AS done', 'v.pet_id AS pet_id',
+                    'v.vaccine_id AS vaccine_id', 'vac.name AS vaccine_name'
+                ]);
+        }
 
-            ->where('v.pet_id', $pet_id)
-            ->get(['v.id AS id','v.date AS date', 'v.done AS done', 'v.pet_id AS pet_id',
-                'v.vaccine_id AS vaccine_id', 'vac.name AS vaccine_name']);
 
         return Response()->json($vaccinations);
     }

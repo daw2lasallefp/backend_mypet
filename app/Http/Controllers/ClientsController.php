@@ -34,10 +34,21 @@ class ClientsController extends Controller
      */
     public function index(Request $request)
     {
+        // try {
+            
+        //         $clients = Clients::all(); 
+            
+        // } catch (Exception $e) {
+        //     return response()->json(['response_body' => $e->getMessage()], 500);
+        // }
+        // return response()->json($clients);
         try {
-            
-                $clients = Clients::all(); 
-            
+            if($request->has('page')){
+                $clients = Clients::paginate(5);
+            }else{
+                $clients = Clients::all();
+            }
+           
         } catch (Exception $e) {
             return response()->json(['response_body' => $e->getMessage()], 500);
         }

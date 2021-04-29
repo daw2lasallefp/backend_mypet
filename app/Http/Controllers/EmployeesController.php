@@ -29,6 +29,9 @@ class EmployeesController extends Controller
         $credentials = $request->only('email', 'password');
         $employee = Employees::where('email', $request->email)->first();
 
+        if ($employee === null) {
+            return response()->json(['error' => 'El empleado no se encuentra en la base de datos.'], 404);
+        }
         if ($employee->available === 0){
             return response()->json(['error' => 'Lo siento, este empleado ha sido dado de baja.'], 404);
         }

@@ -18,7 +18,7 @@ class DatesController extends Controller
     {
         try {
             if($request->has('page')){
-                $dates = Dates::all()->paginate(5);
+                $dates = Dates::paginate(5);
             }else{
                 $dates = Dates::all(); 
             }
