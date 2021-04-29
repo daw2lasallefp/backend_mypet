@@ -52,6 +52,7 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::get('/dates/{id}', [DatesController::class, 'show']);
     Route::get('/dates/pets/{petId}', [DatesController::class, 'showByPetId']);
     Route::get('/dates/employees/{employeeId}', [DatesController::class, 'showByEmployeeId']);
+    Route::get('/dates/clients/{clientId}', [DatesController::class, 'showByClientId']);
     Route::post('/dates', [DatesController::class, 'store']);
     Route::delete('/dates/{id}', [DatesController::class, 'destroy']);
 
