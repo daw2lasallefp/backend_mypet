@@ -45,7 +45,7 @@ class PetsController extends Controller
 
             return Pets::all()
             ->where('available', filter_var($request->available, FILTER_VALIDATE_BOOLEAN));
-    
+
         } else {
             return Pets::all();
         }
