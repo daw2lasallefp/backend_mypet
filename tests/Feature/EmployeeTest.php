@@ -66,7 +66,7 @@ class EmployeeTest extends TestCase
         ]);
 
         $response->assertStatus(409);
-       
+
     }
 
     public function testGetEmployees(){
@@ -83,11 +83,11 @@ class EmployeeTest extends TestCase
     public function testGetEmployeesNoToken(){
         $employee = Employees::where('email', 'admin@admin.es')->first();
 
-        $response = $this->get('api/employees');
+        $response = $this->withHeaders(['Authorization'=> 'Bearer ey'])->get('api/employees');
 
         $response
         ->assertStatus(403)
-        ->assertJson(['status' => 'Authorization Token not found']);
+        ->assertJson(['status' => 'Token is Invalid']);
 
     }
 }
