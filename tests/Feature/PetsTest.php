@@ -1,7 +1,7 @@
 <?php
 namespace Tests\Feature;
 
-use App\Models\Pets;
+use App\Models\Vaccines;
 use Closure;
 use Illuminate\Support\Facades\App;
 use Mockery;
@@ -25,7 +25,6 @@ class PetsTest extends TestCase {
             ->once()
             ->andReturn([]);
 
-
         $this->app->instance('overload:App\Models\Pets', $petsMock);
 
         $response = $this->call('GET', 'api/pets');
@@ -33,5 +32,24 @@ class PetsTest extends TestCase {
         $response
             ->assertStatus(200)
             ->assertJson([]);
+    }
+
+    public function testListPet() {
+        $petsMock = Mockery::mock('overload:App\Models\Pets');
+        $petsMock
+            ->shouldReceive('find')
+            ->with(1)
+            ->once()
+            ->andReturn(["name" => "mascota", "sex" => "hembra", "weight" => 2, "age" => 3, "species" => "felino",
+                "client_id" => 3]);
+
+        $this->app->instance('overload:App\Models\Pets', $petsMock);
+
+        $response = $this->call('GET', 'api/pets/1');
+
+        $response
+            ->assertStatus(200)
+            ->assertJson(["name" => "mascota", "sex" => "hembra", "weight" => 2, "age" => 3, "species" => "felino",
+                "client_id" => 3]);
     }
 }
