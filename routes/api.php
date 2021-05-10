@@ -62,7 +62,25 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::get('/vaccinations/{id}', [VaccinationsController::class, 'showById']);
     Route::post('/vaccinations', [VaccinationsController::class, 'store']);
     Route::put('/vaccinations/{vaccination_id}', [VaccinationsController::class, 'update']);
+
+    //Vaccines
+    Route::get('/vaccines', [VaccinesController::class, 'index']);
+    Route::get('/vaccines/{id}', [VaccinesController::class, 'show']);
+    Route::post('/vaccines', [VaccinesController::class, 'store']);
+    Route::put('/vaccines/{id}', [VaccinesController::class, 'update']);
+
+//Pets
+    Route::get('/pets', [PetsController::class, 'index']);
+    Route::get('/pets/{id}', [PetsController::class, 'show']);
+    Route::post('/pets', [PetsController::class, 'store']);
+    Route::put('/pets/{id}', [PetsController::class, 'update']);
+    Route::delete('/pets/{id}', [PetsController::class, 'delete']);
+
+//Consultation
+    Route::get('/pets/{petId}/consultations', [ConsultationsController::class, 'index']);
+    Route::post('/pets/{petId}/consultations', [ConsultationsController::class, 'store']);
 });
+
 
 Route::post('resetPass', [ResetPwdReqController::class, 'reqForgotPassword']);
 Route::post('updatePass', [UpdatePwdController::class, 'updatePassword']);
@@ -84,19 +102,4 @@ Route::get('/clients/{id}', [ClientsController::class, 'show']);
 Route::put('/clients/update/{id}', [ClientsController::class, 'update']);
 Route::delete('/clients/delete/{id}', [ClientsController::class, 'destroy']);
 
-//Vaccines
-Route::get('/vaccines', [VaccinesController::class, 'index']);
-Route::get('/vaccines/{id}', [VaccinesController::class, 'show']);
-Route::post('/vaccines', [VaccinesController::class, 'store']);
-Route::put('/vaccines/{id}', [VaccinesController::class, 'update']);
 
-//Pets
-Route::get('/pets', [PetsController::class, 'index']);
-Route::get('/pets/{id}', [PetsController::class, 'show']);
-Route::post('/pets', [PetsController::class, 'store']);
-Route::put('/pets/{id}', [PetsController::class, 'update']);
-Route::delete('/pets/{id}', [PetsController::class, 'delete']);
-
-//Consultation
-Route::get('/pets/{petId}/consultations', [ConsultationsController::class, 'index']);
-Route::post('/pets/{petId}/consultations', [ConsultationsController::class, 'store']);
