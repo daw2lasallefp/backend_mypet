@@ -26,15 +26,15 @@ class EmployeeTest extends TestCase
 
     public function testRegisterEmployees()
     {
-
+        //Modificar id de la especialidad
         $response = $this->postJson('api/registerEmployee', [
             'name' => 'Laura',
             'surname' => 'Checa',
-            'email' => 'laurache@hotmail.com',
+            'email' => 'nuevoemail@hotmail.com',
             'password' => 'uuuuuAa',
             'workShifts' => 'tarde',
             'admin' => '0',
-            'specialities' => '12',
+            'specialities' => '77',
         ]);
 
         $response
@@ -58,7 +58,7 @@ class EmployeeTest extends TestCase
         $response = $this->postJson('api/registerEmployee', [
             'name' => 'Laura',
             'surname' => 'Checa',
-            'email' => 'laurachecaal@hotmail.com',
+            'email' => 'default@admin.com',
             'password' => 'uuuuuAa',
             'workShifts' => 'tarde',
             'admin' => '0',
@@ -70,7 +70,7 @@ class EmployeeTest extends TestCase
     }
 
     public function testGetEmployees(){
-        $employee = Employees::where('email', 'admin@admin.es')->first();
+        $employee = Employees::where('email', 'default@admin.com')->first();
 
         $token = \Tymon\JWTAuth\Facades\JWTAuth::fromUser($employee);
 
@@ -81,7 +81,7 @@ class EmployeeTest extends TestCase
     }
 
     public function testGetEmployeesNoToken(){
-        $employee = Employees::where('email', 'admin@admin.es')->first();
+        $employee = Employees::where('email', 'default@admin.com')->first();
 
         $response = $this->get('api/employees');
 

@@ -28,7 +28,7 @@ class EmployeesFactory extends Factory
             'email'=> $this->faker->unique()->safeEmail,
             'password'=> '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
             'admin'=> $this->faker->randomElement([true, false]),
-            'work_shift'=> $this->faker->randomElement(['tarde','mañana']),
+            'work_shift'=> $this->faker->randomElement(['Tarde','Mañana']),
             'speciality_id'=> \App\Models\Specialities::inRandomOrder()->first()->id,
             //
         ];
