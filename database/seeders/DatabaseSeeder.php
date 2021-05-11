@@ -24,14 +24,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Specialities::factory(3)->create();
+        Specialities::factory(7)->create();
         Employees::factory(10)->create();
         Clients::factory(10)->create();
         Clinics::factory(10)->create();
         Pets::factory(10)->create();
         Dates::factory(10)->create();
         Consultations::factory(10)->create();
-        Vaccines::factory(2)->create();
+        Vaccines::factory(4)->create();
         Vaccinations::factory(10)->create();
 
         Employees::create(array(
