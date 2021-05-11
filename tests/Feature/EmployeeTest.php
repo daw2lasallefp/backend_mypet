@@ -1,8 +1,11 @@
 <?php
 
 namespace Tests\Feature;
+
 use App\Models\Employees;
 use Tests\TestCase;
+use Mockery;
+
 
 
 class EmployeeTest extends TestCase
@@ -26,15 +29,15 @@ class EmployeeTest extends TestCase
 
     public function testRegisterEmployees()
     {
-
+        //Modificar id de la especialidad a una existente en la BD
         $response = $this->postJson('api/registerEmployee', [
             'name' => 'Laura',
             'surname' => 'Checa',
-            'email' => 'laurache@hotmail.com',
+            'email' => 'nuevoemail@hotmail.com',
             'password' => 'uuuuuAa',
             'workShifts' => 'tarde',
             'admin' => '0',
-            'specialities' => '12',
+            'specialities' => '77',
         ]);
 
         $response
@@ -58,7 +61,7 @@ class EmployeeTest extends TestCase
         $response = $this->postJson('api/registerEmployee', [
             'name' => 'Laura',
             'surname' => 'Checa',
-            'email' => 'laurachecaal@hotmail.com',
+            'email' => 'default@admin.com',
             'password' => 'uuuuuAa',
             'workShifts' => 'tarde',
             'admin' => '0',
@@ -66,28 +69,27 @@ class EmployeeTest extends TestCase
         ]);
 
         $response->assertStatus(409);
-
     }
 
-    public function testGetEmployees(){
-        $employee = Employees::where('email', 'admin@admin.es')->first();
+    public function testGetEmployees()
+    {
+        $employee = Employees::where('email', 'default@admin.com')->first();
 
         $token = \Tymon\JWTAuth\Facades\JWTAuth::fromUser($employee);
 
-        $response = $this->withHeaders(['Authorization'=> 'Bearer '. $token])->get('api/employees');
+        $response = $this->withHeaders(['Authorization' => 'Bearer ' . $token])->get('api/employees');
 
         $response->assertStatus(200);
-
     }
 
-    public function testGetEmployeesNoToken(){
-        $employee = Employees::where('email', 'admin@admin.es')->first();
+    public function testGetEmployeesNoToken()
+    {
+        $employee = Employees::where('email', 'default@admin.com')->first();
 
-        $response = $this->withHeaders(['Authorization'=> 'Bearer ey'])->get('api/employees');
+        $response = $this->withHeaders(['Authorization' => 'Bearer ey'])->get('api/employees');
 
         $response
-        ->assertStatus(403)
-        ->assertJson(['status' => 'Token is Invalid']);
-
+            ->assertStatus(403)
+            ->assertJson(['status' => 'Token is Invalid']);
     }
 }

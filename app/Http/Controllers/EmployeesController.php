@@ -32,7 +32,7 @@ class EmployeesController extends Controller
         if ($employee === null) {
             return response()->json(['error' => 'El empleado no se encuentra en la base de datos.'], 404);
         }
-        if ($employee->available === 0){
+        if ($employee->available === 0) {
             return response()->json(['error' => 'Lo siento, este empleado ha sido dado de baja.'], 404);
         }
 
@@ -78,15 +78,15 @@ class EmployeesController extends Controller
             'specialities' => 'required|numeric',
         ]);
 
-        if($validatorEmail->fails()){
+        if ($validatorEmail->fails()) {
             return response()->json(["message" => $validatorEmail], 409);
         }
 
         if ($validatorFields->fails()) {
             return response()->json(["message" => $validatorFields], 400);
         }
-
-        $employee = Employees::create([
+        try{
+                $employee = Employees::create([
             'name' => $request->get('name'),
             'surname' => $request->get('surname'),
             'email' => $request->get('email'),
@@ -95,6 +95,10 @@ class EmployeesController extends Controller
             'work_shift' => $request->get('workShifts'),
             'speciality_id' => $request->get('specialities'),
         ]);
+        }catch(Exception $e){
+            return response()->json(["message" => 'Error interno'], 404);
+        }
+    
 
         $token = JWTAuth::fromUser($employee);
 
@@ -105,17 +109,15 @@ class EmployeesController extends Controller
     public function index(Request $request)
     {
         try {
-            if($request->has('page')){
+            if ($request->has('page')) {
                 $employees = Employees::where('available', true)->paginate(5);
-            }else{
-                $employees = Employees::all()->where('available', true); 
+            } else {
+                $employees = Employees::all()->where('available', true);
             }
-           
         } catch (Exception $e) {
             return response()->json(['response_body' => $e->getMessage()], 500);
         }
         return response()->json($employees);
-		
     }
 
     public function show($id)
@@ -124,25 +126,34 @@ class EmployeesController extends Controller
         if ($employee == null) {
             return response()->json(null, 404);
         } else {
-          return response()->json(['response_body' => $employee]);
+            return response()->json(['response_body' => $employee]);
         }
-
     }
 
     public function update(Request $request, $id)
     {
         $employee = Employees::find($id);
+ 
         if ($employee === null) {
             return response()->json(['response_body' => 'El empleado no se encuentra en la base de datos'], 404);
+        } else if ($employee->email !== $request->email) {
+            $find =  Employees::where('email', $request->email)->first();
+            if ($find) {
+                return response()->json(['error' => 'El email introducido ya se encuentra en la base de datos.'], 409);
+            }
         } else {
-            $employee->update([
-                'name' => $request->name,
-                'surname' => $request->surname,
-                'email' => $request->email,
-                'work_shift' => $request->workShifts,
-                'admin' => $request->admin,
-                'speciality_id' => $request->specialities,
-            ]);
+            try {
+                $employee->update([
+                    'name' => $request->name,
+                    'surname' => $request->surname,
+                    'email' => $request->email,
+                    'work_shift' => $request->workShifts,
+                    'admin' => $request->admin,
+                    'speciality_id' => $request->specialities,
+                ]);
+            } catch (Exception $e) {
+                return response()->json(['error' => 'Error interno.'], 404);
+            }
 
             return response()->json($employee, 200);
         }
@@ -161,5 +172,4 @@ class EmployeesController extends Controller
         }
     }
 
-    //TODO: 
 }
