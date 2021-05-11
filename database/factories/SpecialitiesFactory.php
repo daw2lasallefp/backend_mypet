@@ -23,7 +23,7 @@ class SpecialitiesFactory extends Factory
     {
         return [
             'id' =>  $this->faker->unique()->numberBetween(1,200),
-            'name'=> $this->faker->randomElement(['Cardiologia', 'Cirugia', 'Oftamologia', 'Oncologia', 'Dermatologia', 'Traumatologia', 'Medicina_interna']),
+            'name'=> $this->faker->unique()->randomElement(['Cardiologia', 'Cirugia', 'Oftamologia', 'Oncologia', 'Dermatologia', 'Traumatologia', 'Medicina_interna']),
         ];
     }
 }
