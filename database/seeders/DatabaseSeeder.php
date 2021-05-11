@@ -39,7 +39,7 @@ class DatabaseSeeder extends Seeder
             'surname' => 'Default',
             'email' => 'default@admin.com',
             'password' => Hash::make('Default_Admin1234'),
-            'work_shift' => 'tarde',
+            'work_shift' => 'Tarde',
             'admin' => 1,
             'speciality_id' => DB::table('specialities')->pluck('id')->first(),
             'available' => 1
