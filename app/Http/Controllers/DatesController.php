@@ -115,12 +115,12 @@ class DatesController extends Controller
         if($request->has('page')){
             $consultations = Dates::where('pets.client_id', $clientId)
             ->join('pets', 'dates.pet_id', '=', 'pets.id')
-            ->paginate(5);      
+            ->paginate(5, array('dates.*'));      
           }else{
             $consultations = DB::table('dates')
             ->join('pets', 'dates.pet_id', '=', 'pets.id')
             ->where('pets.client_id', $clientId)
-            ->get();
+            ->get('dates.*');
         }
   
 
