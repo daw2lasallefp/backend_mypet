@@ -182,13 +182,20 @@ class ClientsController extends Controller
         $credential = $request->only('email', 'password');
         $clients = Clients::where('email', $request->email)->first();
 
+        if ($clients === null) {
+            return response()->json(['error' => 'El cliente no se encuentra en la base de datos.'], 404);
+        }
+
         if ($clients->available === 0){
             return response()->json(['error' => 'Lo sentimos, este cliente ha sido dado de baja.'], 404);
         }
 
+        
+        
+
         try {
             if (!$token = JWTAuth::attempt($credential)) {
-                return response()->json(['error' => 'incorrect_credentials'], 400);
+                return response()->json(['error' => 'Email y/o password incorrectos'], 400);
             }
         } catch (JWTException $e) {
             return response()->json(['error' => 'could_not_create_token'], 500);
