@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employees;
 use App\Models\Specialities;
 use Illuminate\Http\Request;
+use Exception;
+use Illuminate\Support\Facades\Config;
 
 class SpecialitiesController extends Controller
 {
@@ -14,7 +17,13 @@ class SpecialitiesController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            $specialities = Specialities::all();
+        } catch (Exception $e) {
+            return response()->json(['response_body' => $e->getMessage()], 500);
+        }
+        return response()->json($specialities);
+     
     }
 
     /**

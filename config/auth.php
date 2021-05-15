@@ -42,7 +42,7 @@ return [
         ],
 
         'api' => [
-            'driver' => 'token',
+            'driver' => 'jwt',
             'provider' => 'users',
             'hash' => false,
         ],
@@ -66,15 +66,20 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'employees' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => App\Models\Employees::class,
+        ],
+        
+        'clients' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Clients::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Clients::class,
+        ],
     ],
 
     /*
@@ -93,12 +98,19 @@ return [
     */
 
     'passwords' => [
-        'users' => [
-            'provider' => 'users',
+        'employees' => [
+            'provider' => 'employees',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
         ],
+
+        'clients' =>[
+            'provider' => 'clients',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ]
     ],
 
     /*

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePetsTable extends Migration
+class CreateAvailableColumn extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class CreatePetsTable extends Migration
      */
     public function up()
     {
-        Schema::create('pets', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('pets', function (Blueprint $table) {
+            $table->boolean('available')->nullable($value = false)->default(true);
         });
     }
 
@@ -26,6 +25,8 @@ class CreatePetsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pets');
+        Schema::table('pets', function (Blueprint $table) {
+            $table->dropColumn('available');
+        });
     }
 }

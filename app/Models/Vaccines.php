@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Vaccines extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'id',
+        'name',
+        'available'
+    ];
+
+    protected $casts = [
+        'available' => 'boolean',
+    ];
 }

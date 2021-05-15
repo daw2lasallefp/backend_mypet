@@ -10,11 +10,16 @@ class VaccinesController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->has('available')) {
+            return Vaccines::all()->where('available', filter_var($request->available, FILTER_VALIDATE_BOOLEAN));
+        } else {
+            return Vaccines::all();
+        }
     }
 
     /**
@@ -24,18 +29,24 @@ class VaccinesController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
+
     {
-        //
+        $vaccine = Vaccines::all()->where('name', $request->name);
+        if ($vaccine->isEmpty()) {
+            return Vaccines::create($request->all());
+        }else{
+            return response()->json(null, 409);
+        }
     }
 
     /**
@@ -44,9 +55,14 @@ class VaccinesController extends Controller
      * @param  \App\Models\Vaccines  $vaccines
      * @return \Illuminate\Http\Response
      */
-    public function show(Vaccines $vaccines)
+    public function show($id)
     {
-        //
+        $vaccine = Vaccines::find($id);
+        if ($vaccine == null) {
+            return response()->json(null, 404);
+        } else {
+            return response()->json($vaccine);
+        }
     }
 
     /**
@@ -65,11 +81,18 @@ class VaccinesController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Vaccines  $vaccines
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, Vaccines $vaccines)
+    public function update(Request $request, $id)
     {
-        //
+        $vaccine = Vaccines::find($id);
+
+        if ($vaccine == null) {
+            return response()->json(null, 404);
+        } else {
+            $vaccine->update(['available' => filter_var($request->available, FILTER_VALIDATE_BOOLEAN)]);
+            return response()->json($vaccine);
+            }
     }
 
     /**
