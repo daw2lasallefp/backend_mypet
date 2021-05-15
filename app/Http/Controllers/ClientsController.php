@@ -136,10 +136,14 @@ class ClientsController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        $clients = Clients::find($id);
-        $clients->delete();
-
-        return response()->json($clients, 200);
+        $client = Clients::find($id);
+        if ($client === null) {
+            return response()->json(['response_body' => 'Client ID no encontrado'], 404);
+        } else {
+            $client->available = false;
+            $client->save();
+            return response()->json($client, 200);
+        }
     }
 
 

@@ -20,6 +20,7 @@ class CreateClientsTable extends Migration
             $table->string('email')->unique()->nullable(false);
             $table->string('password')->nullable(false);
             $table->string('phone');
+            $table->boolean('available')->nullable($value = false)->default(true);
             $table->timestamps();
         });
     }
