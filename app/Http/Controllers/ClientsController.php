@@ -140,8 +140,8 @@ class ClientsController extends Controller
         if ($client === null) {
             return response()->json(['response_body' => 'Client ID no encontrado'], 404);
         } else {
-            $client->available = false;
-            $client->save();
+            //$client->available = false;
+            $client->delete();
             return response()->json($client, 200);
         }
     }
