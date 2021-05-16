@@ -44,9 +44,9 @@ class ClientsController extends Controller
         // return response()->json($clients);
         try {
             if($request->has('page')){
-                $clients = Clients::paginate(5);
+                $clients = Clients::where('available', true)->paginate(5);
             }else{
-                $clients = Clients::all();
+                $clients = Clients::all()->where('available', true);
             }
            
         } catch (Exception $e) {
@@ -140,8 +140,8 @@ class ClientsController extends Controller
         if ($client === null) {
             return response()->json(['response_body' => 'Client ID no encontrado'], 404);
         } else {
-            //$client->available = false;
-            $client->delete();
+            $client->available = false;
+            $client->save();
             return response()->json($client, 200);
         }
     }
